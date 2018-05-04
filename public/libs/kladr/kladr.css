@@ -1,0 +1,34 @@
+.kladr-wrapper {
+    position: relative;
+}
+/*.kladr-wrapper input {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+}*/
+.kladr-list {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    position: absolute;
+    background: white;
+    z-index: 100;
+    opacity: .8;
+    top: -3;
+}
+.kladr-list div {
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-collapse: collapse;
+    cursor: pointer;
+}
+.kladr-list div:hover {
+    background: #e5e5e5;
+}
+
+.kladr-list-enter-active, .kladr-list-leave-active {
+    transition: opacity .3s;
+}
+.kladr-list-enter, .kladr-list-leave-to {
+    opacity: 0;
+}
