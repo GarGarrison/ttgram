@@ -17,7 +17,7 @@ Route::get('/test', 'MainController@test');
 Auth::routes();
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
 
-Route::get('/', 'MainController@index');
+Route::get('/', 'MainController@index')->name("root");
 Route::get('/info', 'MainController@info')->name("info");
 Route::get('/service', 'MainController@service')->name("service");
 Route::post('/save_telegram', 'MainController@save_telegram')->name("save_telegram");

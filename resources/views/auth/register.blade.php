@@ -6,20 +6,21 @@
         el: '#ttgram',
         data: {
             user_type: "fiz",
-            x_region: "",
-            x_city: "",
-            x_street: ""
+            fio : "",
+            company : "",
+            phone : "",
+            email : "",
+            region : "",
+            city : "",
+            street : "",
+            building : "",
+            flat : ""
         }
     });
 </script>
 @endsection
 
 @section('content')
-<kladr-block>
-    <kladr-item data-kladr-type="region" v-model="x_region" placeholder="x_region"></kladr-item>
-    <kladr-item data-kladr-type="city" v-model="x_city" placeholder="x_city"></kladr-item>
-    <kladr-item data-kladr-type="street" v-model="x_street" placeholder="x_street"></kladr-item>
-</kladr-block>
 <form action="{{ route('register') }}" method="post">
     <div class="row">
         <div class="col s12">

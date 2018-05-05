@@ -5,7 +5,7 @@
         <div class="col s12">
             @yield("header")
             <div class="right-align">
-                <a href="{{ route('service') }}">Заказать телеграмму</a>
+                <a href="{{ route('service') }}">Заказать услугу</a>
                 <a href="{{ route('templates') }}">Шаблоны телеграмм</a>
                 <a href="{{ route('saved_receivers') }}">Сохраненные адресаты</a>
             </div>

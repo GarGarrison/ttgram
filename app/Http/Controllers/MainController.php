@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Telegram;
 use App\Template;
 use App\SavedReceiver;
 
@@ -34,7 +35,8 @@ class MainController extends Controller
 
     public function save_telegram(Request $request){
         $data = $request->all();
-        return "123";
+        $new_telegram = Telegram::create($data);
+        return $new_telegram->id;
     }
     // public function get_user_data(){
     //     return Auth::user();

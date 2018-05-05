@@ -195,7 +195,7 @@
             </div>
         </div>
     </form>
-    <form class="step" v-if="copyStep" @submit.prevent="submit" key="4">
+    <form class="step" v-if="copyStep" @submit.prevent="submit_finally" key="4">
         <div class="col s12 content-head">
             <h3>Параметры копии телеграммы</h3>
         </div>
@@ -204,7 +204,7 @@
                 <div class="col s12">
                     <div class="col s12 m6">
                         <span class="error" v-if="validate_errors['copy_date']">@{{ validate_errors['copy_date'] }}</span>
-                        <input class="input-text datepicker" type="date" v-model="telegram_data.copy_date" name="copy_date" placeholder="Дата"></div>
+                        <input class="input-text datepicker" type="text" onfocus="(this.type='date')" v-model="telegram_data.copy_date" name="copy_date" placeholder="Дата"></div>
                 </div>
                 <div class="col s12">
                     <div class="col s12 m6">

@@ -1,7 +1,8 @@
 var ttgram = new Vue({
             el: '#ttgram',
             data: {
-                step:4,
+                step:1,
+                last_step:5,
                 saved_receiver: "",
                 saved_template: "",
                 telegram_data: {
@@ -26,7 +27,7 @@ var ttgram = new Vue({
                     s_flat: "",
                     r_flat: "",
                     notification: "email",
-                    service_type: "telegram",
+                    service_type: "copy_in",
                     text: "",
                     copy_date: "",
                     copy_number: "",
@@ -90,7 +91,7 @@ var ttgram = new Vue({
                     this.validate_errors = {};
                     if (step == 1) this.validate_rules(["s_fio", "s_phone", "s_email", "notification"]);
                     if (step == 1 && this.telegram_data.notification == "address") this.validate_rules(["s_region", "s_city", "s_street", "s_building"]);
-                    if (step == 3) this.validate_rules(["r_name", "r_surname", "r_region", "r_city", "r_street", "r_building"]);
+                    if (this.telegramStep) this.validate_rules(["r_name", "r_surname", "r_region", "r_city", "r_street", "r_building"]);
                     if (step == 4) this.validate_rules(["text"]);
                 },
                 submit: function(){
@@ -105,7 +106,7 @@ var ttgram = new Vue({
                         axios.post("/save_telegram/", vm.telegram_data)
                             .then(function (response) {
                                 vm.request_number = response.data;
-                                vm.next();
+                                vm.step = vm.last_step;
                                 //vm.telegram_data.text = data.template;
                             })
                             .catch(function (response) {

@@ -1,7 +1,7 @@
 Vue.component("kladr-item", {
     data: function() {
         return {
-            url: "http://localhost:8000/kladr",
+            url: "/kladr",
             variants: []
         }
     },

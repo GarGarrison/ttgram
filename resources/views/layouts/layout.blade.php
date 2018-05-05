@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/libs/materialize/materialize.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/libs/kladr/kladr.css">
@@ -34,7 +35,7 @@
             @endif
         </div>
         <div class="hat">
-            <img class="logo" src="/img/logo.png">
+            <a href="{{ route('root') }}"><img class="logo" src="/img/logo.png"></a>
             <img class="afterlogo" src="/img/title2.png">
             @section("points")
             <div class="points">
