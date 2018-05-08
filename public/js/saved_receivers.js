@@ -3,9 +3,13 @@ var app = new Vue({
     data: {
         tmp_list: [],
         validate_errors: [],
-        url_get: "http://localhost:8000/home/saved_receivers/get_receivers",
-        url_del: "http://localhost:8000/home/saved_receivers/del_receivers",
+        url_get: "/get_receiver_data/",
+        url_get_all: "/profile/saved_receivers/get_receivers",
+        url_del: "/profile/saved_receivers/del_receivers",
         showModal: false,
+        edit: false,
+        current_id: "",
+        template_name: "",
         surname: "",
         name: "",
         company: "",
@@ -19,7 +23,7 @@ var app = new Vue({
     },
     mounted: function(){
         var vm = this;
-        axios.get(this.url_get)
+        axios.get(this.url_get_all)
             .then(function (response) {
                 vm.tmp_list = response.data;
             })
@@ -38,6 +42,28 @@ var app = new Vue({
                     })
                     var index = vm.tmp_list.indexOf(item[0]);
                     vm.tmp_list.splice(index, 1);
+                })
+                .catch(function (response) {
+                    console.log(response)
+                })
+        },
+        editItem: function(id) {
+            var vm = this;
+            this.current_id = id;
+            this.edit = true;
+            this.showModal = true;
+            axios.get(this.url_get + id)
+                .then(function (response) {
+                    vm.template_name = response.data.template_name;
+                    vm.name = response.data.name;
+                    vm.company = response.data.company;
+                    vm.phone = response.data.phone;
+                    vm.email = response.data.email;
+                    vm.region = response.data.region;
+                    vm.city = response.data.city;
+                    vm.street = response.data.street;
+                    vm.building = response.data.building;
+                    vm.flat = response.data.flat;
                 })
                 .catch(function (response) {
                     console.log(response)

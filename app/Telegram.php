@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Telegram extends Model
 {
     protected $fillable = [
+        'uid',
         's_type',
         'notification',
         's_fio',

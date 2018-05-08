@@ -34,7 +34,9 @@ class MainController extends Controller
     }
 
     public function save_telegram(Request $request){
+        $user = Auth::user();
         $data = $request->all();
+        if ($user) $data["uid"] = $user->id;
         $new_telegram = Telegram::create($data);
         return $new_telegram->id;
     }

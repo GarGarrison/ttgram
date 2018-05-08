@@ -27,15 +27,15 @@ Route::get('/get_receiver_data/{rid}', 'MainController@get_receiver_data');
 Route::get('/get_template_data/{tid}', 'MainController@get_template_data');
 
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/home', 'HomeController@index')->name('save_user');
+Route::get('/profile', 'HomeController@index')->name('profile');
+Route::post('/profile', 'HomeController@index')->name('save_user');
 
-Route::get('/home/templates', 'HomeController@templates')->name('templates');
-Route::post('/home/templates', 'HomeController@templates')->name('save_template');
-Route::get('/home/templates/get_templates', 'HomeController@get_templates');
-Route::delete('/home/templates/del_template', 'HomeController@del_template');
+Route::get('/profile/templates', 'HomeController@templates')->name('templates');
+Route::post('/profile/templates', 'HomeController@templates')->name('save_template');
+Route::get('/profile/templates/get_templates', 'HomeController@get_templates');
+Route::delete('/profile/templates/del_template', 'HomeController@del_template');
 
-Route::get('/home/saved_receivers', 'HomeController@saved_receivers')->name('saved_receivers');
-Route::post('/home/saved_receivers', 'HomeController@saved_receivers')->name('save_receiver');
-Route::get('/home/saved_receivers/get_receivers', 'HomeController@get_receivers');
-Route::delete('/home/saved_receivers/del_receiver', 'HomeController@del_receiver');
+Route::get('/profile/saved_receivers', 'HomeController@saved_receivers')->name('saved_receivers');
+Route::post('/profile/saved_receivers', 'HomeController@saved_receivers')->name('save_receiver');
+Route::get('/profile/saved_receivers/get_receivers', 'HomeController@get_receivers');
+Route::delete('/profile/saved_receivers/del_receiver', 'HomeController@del_receiver');

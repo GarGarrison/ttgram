@@ -1,10 +1,10 @@
 <div class="row">
     <div class="col s12 m4 radio-span">
-        <input id="r-fiz" class="with-gap" type="radio" v-model="user_type" ref="user_type" name="user_type" value="fiz" data-value="{{ Auth::user() ? Auth::user()->user_type: old('fio') }}">
+        <input id="r-fiz" class="with-gap" type="radio" v-model="user_type" ref="user_type" name="user_type" value="fiz" data-value="{{ Auth::user() ? Auth::user()->user_type: old('user_type') }}">
         <label for="r-fiz">Физическое лицо</label>
     </div>
     <div class="col s12 m4 radio-span">
-        <input id="r-jur" class="with-gap" type="radio" v-model="user_type" ref="user_type" name="user_type" value="jur" data-value="{{ Auth::user() ? Auth::user()->user_type: old('fio') }}">
+        <input id="r-jur" class="with-gap" type="radio" v-model="user_type" ref="user_type" name="user_type" value="jur" data-value="{{ Auth::user() ? Auth::user()->user_type: old('user_type') }}">
         <label for="r-jur">Юридическое лицо</label>
     </div>
 </div>

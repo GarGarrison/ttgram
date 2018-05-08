@@ -30,12 +30,11 @@ a {
   margin-right: 10px;
 }
 
-a.add {
-  background: #308ce7;
-  margin-top: -10px;
+a.blue {
+  background: #195894 !important;
 }
-a.add:hover {
-  background: #195894;
+a.blue:hover {
+  background: #308ce7 !important;
 }
 button, button:active, button:hover, button:focus {
     background: none;
@@ -345,10 +344,17 @@ textarea:focus {
 }
 
 .list-element {
+  position: relative;
   padding: 10px;
   margin: 10px 0px;
   border: 1px solid #bbb;
 }
+.list-element i {
+  position: absolute;
+  right: 5px;
+  cursor: pointer;
+}
+
 .code-wrapper .code {
   font-size: 32px;
   font-weight: bold;
@@ -361,4 +367,42 @@ textarea:focus {
 .code-title {
   font-size: 18px;
   margin-top: 5px;
+}
+
+
+
+.menu-button {
+  background: #308ce7;
+}
+
+.menu-button:hover {
+  background: #195894;
+}
+
+ul.menu-button-list {
+  list-style-type: none;
+  position: absolute;
+  margin: 0px;
+  padding: 0px;
+  right: 0;
+  left: 0;
+}
+ul.menu-button-list li {
+  list-style-type: none;
+  padding: 5px 0px;
+}
+ul.menu-button-list li:first-child {
+  padding-top: 10px;
+}
+
+
+.menu-list-enter-active,
+.menu-list-leave-active {
+  transition: all .2s;
+}
+
+.menu-list-enter,
+.menu-list-leave-to {
+  transform: scaleY(0.2) translateY(-120%);
+  opacity: 0;
 }

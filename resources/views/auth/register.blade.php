@@ -15,7 +15,8 @@
             street : "",
             building : "",
             flat : ""
-        }
+        },
+        mixins: [mount_mixin]
     });
 </script>
 @endsection

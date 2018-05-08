@@ -5,6 +5,7 @@
     <div class="row">
         <div class="col s12">
             <h3>Авторизация</h3>
+            <a class="right" href="{{ route('register') }}">Регистрация</a>
         </div>
     </div>
     <div class="row">

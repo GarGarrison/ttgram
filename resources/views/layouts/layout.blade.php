@@ -27,7 +27,7 @@
                 <div class="auth">
                     <a href="{{ route('logout') }}"><img src="/img/auth.png"><span class="top-span">Выйти</span></a>
                 </div>
-                <a href="/home"><img class="user-info" src="/img/account.png"></a>
+                <a href="{{ route('profile') }}"><img class="user-info" src="/img/account.png"></a>
             @else
                 <div class="auth">
                     <a href="{{ route('login') }}"><img src="/img/auth.png"><span class="top-span">Вход</span></a>

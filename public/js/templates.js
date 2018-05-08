@@ -3,14 +3,19 @@ var app = new Vue({
     data: {
         tmp_list: [],
         validate_errors: [],
-        url_get: "http://localhost:8000/home/templates/get_templates",
-        url_del: "http://localhost:8000/home/templates/del_template",
-        showModal: false
+        url_get: "/get_template_data/",
+        url_get_all: "/profile/templates/get_templates",
+        url_del: "/profile/templates/del_template",
+        showModal: false,
+        edit: false,
+        current_id: "",
+        name: "",
+        template: ""
         
     },
     mounted: function(){
         var vm = this;
-        axios.get(this.url_get)
+        axios.get(this.url_get_all)
             .then(function (response) {
                 vm.tmp_list = response.data;
             })
@@ -20,7 +25,7 @@ var app = new Vue({
     },
     methods: {
         deleteItem: function(id){
-            vm = this;
+            var vm = this;
             if (!confirm("Удалить выбранный шаблон?")) return;
             axios.delete(this.url_del, { "params": {"id": id} })
                 .then(function (response) {
@@ -29,6 +34,20 @@ var app = new Vue({
                     })
                     var index = vm.tmp_list.indexOf(item[0]);
                     vm.tmp_list.splice(index, 1);
+                })
+                .catch(function (response) {
+                    console.log(response)
+                })
+        },
+        editItem: function(id) {
+            var vm = this
+            this.edit = true;
+            this.showModal = true;
+            this.current_id = id;
+            axios.get(this.url_get + id)
+                .then(function (response) {
+                    vm.name = response.data.name;
+                    vm.template = response.data.template;
                 })
                 .catch(function (response) {
                     console.log(response)

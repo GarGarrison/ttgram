@@ -59,12 +59,10 @@ class HomeController extends Controller
     public function templates(Request $request)
     {
         if ($request->isMethod('post')) {
-            $template = new Template([
-                "uid" => Auth::user()->id,
-                "name" => $request->input("name"),
-                "template" => $request->input("tmp")
-            ]);
-            $template->save();
+            $data = $request->all();
+            $data["uid"] = Auth::user()->id;
+            if (isset($data["current_id"])) Template::find($data["current_id"])->update($data);
+            else $template = Template::create($data);
             return redirect()->back();
         }
         return view('home.templates');
