@@ -35,7 +35,22 @@
     </modal>
     <div class="row">
         <div class="col s12">
-            <template-list-filter data-list-name="tmp_list" placeholder="Поиск по названию" data-empty="Шаблонов не найдено"></template-list-filter>
+            <list-filter :original_list='tmp_list' :filter_field="'name'" data-empty="Шаблонов не найдено" placeholder="Фильтр по названию шаблона">
+                <template slot-scope="{ row }">
+                    <div class="col s6 m4">
+                        <div class = "truncate list-element">
+                            <span class="left">@{{ row.name }}</span>
+                            <i class="material-icons" @click="deleteItem(row.id)" title="удалить">close</i>
+                        </div>
+                    </div>
+                    <div class="col s6 m8">
+                        <div class = "truncate list-element">
+                            @{{ row.template }}
+                            <i class="material-icons" @click="editItem(row.id)" title="редактировать">mode_edit</i>
+                        </div>
+                    </div>
+                </template>
+            </list-filter>
         </div>
     </div>
 @endsection

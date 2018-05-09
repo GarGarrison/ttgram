@@ -78,6 +78,7 @@
             </div>
             <div class="row">
                 <div class="col s12 m6">
+                    @if(Auth::guest())
                     <div class="switch right">
                         <label>
                           <input type="checkbox" id="registration" checked="checked">
@@ -85,6 +86,7 @@
                           <span class="lever"></span>
                         </label>
                     </div>
+                    @endif
                 </div>
                 <div class="col s12 m6">
                     <button class="button">
@@ -135,7 +137,7 @@
                     <select class="browser-default c-select" name="saved_receiver" v-model="saved_receiver" @change="chooseReceiver">
                         <option value="">Выбрать адресата из списка</option>
                         @foreach( $receivers as $r)
-                        <option value="{{ $r->id }}">{{ $r->name }}</option>
+                        <option value="{{ $r->id }}">{{ $r->template_name }}</option>
                         @endforeach
                     </select>
                     @endif
@@ -236,18 +238,27 @@
             <h3>Текст сообщения</h3>
         </div>
         <div class="col s12 content-body">
-            @if(!empty($templates) && !$templates->isEmpty())
             <div class="row">
-                <div class="col s12">
+                @if(!empty($templates) && !$templates->isEmpty())
+                <div class="col s6">
                     <select class="browser-default c-select" name="saved_receiver" v-model="saved_template" @change="chooseTemplate">
-                        <option value="">Выбрать адресата из списка</option>
+                        <option value="">Выбрать шаблон телеграммы</option>
                         @foreach( $templates as $t)
                         <option value="{{ $t->id }}">{{ $t->name }}</option>
                         @endforeach
                     </select>
                 </div>
+                @endif
+                <div class="col s6">
+                    <span class="error" v-if="validate_errors['payment_type']">@{{ validate_errors['payment_type'] }}</span>
+                    <select class="browser-default c-select" name="payment_type" v-model="telegram_data.payment_type">
+                        <option value="">Способ оплаты</option>
+                        <option value="beznal">Безналичный</option>
+                        <option value="nal">Наличный</option>
+                    </select>
+                </div>
             </div>
-            @endif
+            
             <div class="row">
                 <div class="col s12">
                     <a class="insert-from-file">Вставить из файла (*.txt, *.doc, *.rtf)</a>

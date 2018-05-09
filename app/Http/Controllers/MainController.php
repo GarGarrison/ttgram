@@ -37,6 +37,7 @@ class MainController extends Controller
         $user = Auth::user();
         $data = $request->all();
         if ($user) $data["uid"] = $user->id;
+        $data["status"] = 0;
         $new_telegram = Telegram::create($data);
         return $new_telegram->id;
     }

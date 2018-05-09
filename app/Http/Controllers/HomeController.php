@@ -7,6 +7,7 @@ use App\Http\Controllers\ValidationRules;
 use Validator;
 use Auth;
 use App\Template;
+use App\Telegram;
 use App\SavedReceiver;
 class HomeController extends Controller
 {
@@ -56,18 +57,32 @@ class HomeController extends Controller
         return view('home.profile');
     }
 
+
+    public function history()
+    {
+        return view('home.history');
+    }
+
+    public function get_history()
+    {
+        $user = Auth::user();
+        $arr = Telegram::where("uid", $user->id)->get();
+        return $arr;
+    }
+
+
     public function templates(Request $request)
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
             $data["uid"] = Auth::user()->id;
             if (isset($data["current_id"])) Template::find($data["current_id"])->update($data);
-            else $template = Template::create($data);
+            else Template::create($data);
             return redirect()->back();
         }
         return view('home.templates');
     }
-    public function get_templates(Request $request)
+    public function get_templates()
     {
         $user = Auth::user();
         $arr = Template::where("uid", $user->id)->get();
@@ -83,16 +98,16 @@ class HomeController extends Controller
     public function saved_receivers(Request $request)
     {
         if ($request->isMethod('post')) {
-            $uid = Auth::user()->id;
             $data = $request->all();
-            $data["uid"] = $uid;
-            SavedReceiver::create($data);
+            $data["uid"] = Auth::user()->id;
+            if (isset($data["current_id"])) SavedReceiver::find($data["current_id"])->update($data);
+            else SavedReceiver::create($data);
             return redirect()->back();
         }
         return view('home.saved_receivers');
     }
 
-    public function get_receivers(Request $request)
+    public function get_receivers()
     {
         $arr = SavedReceiver::where("uid", Auth::user()->id)->get();
         return $arr;

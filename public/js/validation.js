@@ -46,6 +46,10 @@ var validator = {
     "regnotification": {
         "rgxp": /.{1,}/, // select
         "text": "выберите способ уведомления"
+    },
+    "regpayment": {
+        "rgxp": /.{1,}/, // select
+        "text": "выберите способ оплаты"
     }
 }
 
@@ -82,5 +86,6 @@ var input_types = {
     notification: "regnotification",
     text: "regtext",
     copy_date: "regdate",
-    copy_number: "regnumber"
+    copy_number: "regnumber",
+    payment_type: "regpayment"
 }

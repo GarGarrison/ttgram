@@ -33,6 +33,8 @@ class Telegram extends Model
         'text',
         'copy_date',
         'copy_number',
-        'copy_direction',  
+        'copy_direction',
+        'payment_type',
+        'status'
     ];
 }

@@ -44,117 +44,6 @@ Vue.component("menu-button", {
     `
 });
 
-var mount_mixin = {
-    mounted: function(){
-                vm = this;
-                var refs = vm.$refs;
-                for (var k in refs) {
-                    var val = refs[k];
-                    // if ref is component (kladr-item)
-                    if (val instanceof Vue) {
-                        val = val.$refs[k];
-                    }
-                    if (val) {
-                        var v = val.getAttribute("data-value");
-                        // if value is empty, use default value from vue.data array
-                        if (v) {
-                            // if ref smth like telegram_data.region
-                            var test_split = k.split('.')
-                            if (test_split.length > 1) {
-                                var k1 = test_split[0];
-                                var k2 = test_split[1];
-                                vm.$data[k1][k2] = v;
-                            }
-                            else vm.$data[k] = v;
-                        }
-                    }
-                }
-            }
-}
-
-var list_mixin = {
-    data: function(){
-        return {
-            search: ""
-        }
-    },
-    props: ['placeholder','data-list-name', 'data-list-style', 'data-item-style', 'data-input-style', 'data-empty'],
-    methods: {
-        deleteThis: function(event) {
-            var id = event.target.getAttribute('data-id');
-            this.$parent.deleteItem(id);
-        },
-        editThis: function(event) {
-            var id = event.target.getAttribute('data-id');
-            this.$parent.editItem(id);
-        }        
-    },
-    computed: {
-        list: function(){
-            var param_name = this.dataListName;
-            var list = this.$parent.$data[param_name];
-            var search = this.search;
-            return list.filter(function(item){
-                return item.name.toLowerCase().indexOf(search.toLowerCase()) > -1
-            });
-        }
-    }
-}
-
-Vue.component("template-list-filter", {
-    template: `<div :class="dataListStyle">
-                    <div class="row">
-                        <div class="col s12">
-                            <input type="text" :placeholder="placeholder" :class="dataInputStyle" v-model="search">
-                        </div>
-                    </div>
-                    <div class="row" v-for="item in list" :key="item.id" :class="dataItemStyle">
-                        <div class="col s6 m4">
-                            <div class = "truncate list-element">
-                                {{ item.name }}
-                                <i class="material-icons" @click="deleteThis" v-bind:data-id="item.id" title="удалить">close</i>
-                            </div>
-                        </div>
-                        <div class="col s6 m8">
-                            <div class = "truncate list-element">
-                                {{ item.template }}
-                                <i class="material-icons" @click="editThis" v-bind:data-id="item.id" title="редактировать">mode_edit</i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12" v-if="list.length == 0">{{ dataEmpty }}</div>
-                </div>
-    `,
-    mixins: [list_mixin]
-})
-
-Vue.component("receivers-list-filter", {
-    template: `<div :class="dataListStyle">
-                    <div class="row">
-                        <div class="col s12">
-                            <input type="text" :placeholder="placeholder" :class="dataInputStyle" v-model="search">
-                        </div>
-                    </div>
-                    <div class="row" v-for="item in list" :key="item.id" :class="dataItemStyle">
-                        <div class="col s6 m4">
-                            <div class = "truncate list-element">
-                                <span class="left">{{ item.template_name }}</span>
-                                <i class="material-icons" @click="deleteThis" v-bind:data-id="item.id" title="удалить">close</i>
-                            </div>
-                        </div>
-                        <div class="col s6 m8">
-                            <div class = "truncate list-element">
-                                {{ item.surname + " " + item.city }}
-                                <i class="material-icons" @click="editThis" v-bind:data-id="item.id" title="редактировать">mode_edit</i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12" v-if="list.length == 0">{{ dataEmpty }}</div>
-                </div>
-    `,
-    mixins: [list_mixin]
-})
-
 Vue.component("modal", {
     data: function(){
         return {
@@ -189,3 +78,83 @@ Vue.component("modal", {
         }
     }
 });
+
+Vue.component("list-filter", {
+    template: ` <div>
+                    <div class='row'>
+                        <slot name="inputs" :fields="fields">
+                            <div class='col s12'>
+                                <input type="text" :placeholder="placeholder" :class="dataInputStyle" v-model="search">
+                            </div>
+                        </slot>
+                    </div>
+                    <div class='row' v-for="item in list" :key="item.id">
+                        <slot :row="item">
+                        </slot>
+                    </div>
+                    <div class='row' v-if="list.length == 0">
+                        <div class="col s12">{{ dataEmpty }}</div>
+                    </div>
+                </div>`,
+    props: ['original_list', 'filter_field', 'data-empty', 'placeholder', 'data-input-style'],
+    data: function(argument) {
+        return {
+            search: "",
+            fields: {}
+        }
+    },
+    computed: {
+        list: function(){
+            // tсли фильтрующих полей несколько
+            if (this.filter_field instanceof Array) {
+                var fields = this.fields;
+                var keys = Object.keys(fields);
+                if (keys.length == 0) return this.original_list;
+                return this.original_list.filter(function(item){
+                    var result = true;
+                    for(var i = 0; i < keys.length; i++) {
+                        var column = keys[i];
+                        result = result && (item[column].toLowerCase().indexOf(fields[column].toLowerCase()) > -1);
+                    }
+                    return result;
+                });
+            }
+            else {
+                var search = this.search;
+                var column = this.filter_field;
+                return this.original_list.filter(function(item){
+                    return item[column].toLowerCase().indexOf(search.toLowerCase()) > -1;
+                });
+            }
+        }
+    }
+})
+
+
+var mount_mixin = {
+    mounted: function(){
+                vm = this;
+                var refs = vm.$refs;
+                for (var k in refs) {
+                    var val = refs[k];
+                    // if ref is component (kladr-item)
+                    if (val instanceof Vue) {
+                        val = val.$refs[k];
+                    }
+                    if (val) {
+                        var v = val.getAttribute("data-value");
+                        // if value is empty, use default value from vue.data array
+                        if (v) {
+                            // if ref smth like telegram_data.region
+                            var test_split = k.split('.')
+                            if (test_split.length > 1) {
+                                var k1 = test_split[0];
+                                var k2 = test_split[1];
+                                vm.$data[k1][k2] = v;
+                            }
+                            else vm.$data[k] = v;
+                        }
+                    }
+                }
+            }
+}

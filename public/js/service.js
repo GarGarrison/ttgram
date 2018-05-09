@@ -27,7 +27,8 @@ var ttgram = new Vue({
                     s_flat: "",
                     r_flat: "",
                     notification: "email",
-                    service_type: "copy_in",
+                    service_type: "telegram",
+                    payment_type: "",
                     text: "",
                     copy_date: "",
                     copy_number: "",
@@ -92,7 +93,7 @@ var ttgram = new Vue({
                     if (step == 1) this.validate_rules(["s_fio", "s_phone", "s_email", "notification"]);
                     if (step == 1 && this.telegram_data.notification == "address") this.validate_rules(["s_region", "s_city", "s_street", "s_building"]);
                     if (this.telegramStep) this.validate_rules(["r_name", "r_surname", "r_region", "r_city", "r_street", "r_building"]);
-                    if (step == 4) this.validate_rules(["text"]);
+                    if (step == 4) this.validate_rules(["text", "payment_type"]);
                 },
                 submit: function(){
                     this.validate_steps(this.step);

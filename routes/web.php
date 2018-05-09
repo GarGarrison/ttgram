@@ -30,6 +30,9 @@ Route::get('/get_template_data/{tid}', 'MainController@get_template_data');
 Route::get('/profile', 'HomeController@index')->name('profile');
 Route::post('/profile', 'HomeController@index')->name('save_user');
 
+Route::get('/profile/history', 'HomeController@history')->name('history');
+Route::get('/profile/history/get_history', 'HomeController@get_history')->name('get_history');
+
 Route::get('/profile/templates', 'HomeController@templates')->name('templates');
 Route::post('/profile/templates', 'HomeController@templates')->name('save_template');
 Route::get('/profile/templates/get_templates', 'HomeController@get_templates');

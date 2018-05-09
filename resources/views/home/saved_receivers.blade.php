@@ -72,7 +72,22 @@
     </modal>
     <div class="row">
         <div class="col s12">
-            <receivers-list-filter data-list-name="tmp_list" placeholder="Поиск по названию" data-empty="Адресатов не найдено"></receivers-list-filter>
+            <list-filter :original_list='tmp_list' :filter_field="'template_name'" data-empty="Адресатов не найдено" placeholder="Фильтр по названию шаблона">
+                <template slot-scope="{ row }">
+                    <div class="col s6 m4">
+                        <div class = "truncate list-element">
+                            <span class="left">@{{ row.template_name }}</span>
+                            <i class="material-icons" @click="deleteItem(row.id)" title="удалить">close</i>
+                        </div>
+                    </div>
+                    <div class="col s6 m8">
+                        <div class = "truncate list-element">
+                            @{{ row.surname + " " + row.city }}
+                            <i class="material-icons" @click="editItem(row.id)" title="редактировать">mode_edit</i>
+                        </div>
+                    </div>
+                </template>
+            </list-filter>
         </div>
     </div>
 @endsection

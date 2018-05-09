@@ -353,6 +353,7 @@ textarea:focus {
   position: absolute;
   right: 5px;
   cursor: pointer;
+  color: #308ce7;
 }
 
 .code-wrapper .code {

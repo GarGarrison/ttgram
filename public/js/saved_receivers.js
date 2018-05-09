@@ -5,7 +5,7 @@ var app = new Vue({
         validate_errors: [],
         url_get: "/get_receiver_data/",
         url_get_all: "/profile/saved_receivers/get_receivers",
-        url_del: "/profile/saved_receivers/del_receivers",
+        url_del: "/profile/saved_receivers/del_receiver",
         showModal: false,
         edit: false,
         current_id: "",
@@ -21,7 +21,7 @@ var app = new Vue({
         building: "",
         flat: ""
     },
-    mounted: function(){
+    created: function(){
         var vm = this;
         axios.get(this.url_get_all)
             .then(function (response) {
@@ -56,6 +56,7 @@ var app = new Vue({
                 .then(function (response) {
                     vm.template_name = response.data.template_name;
                     vm.name = response.data.name;
+                    vm.surname = response.data.surname;
                     vm.company = response.data.company;
                     vm.phone = response.data.phone;
                     vm.email = response.data.email;
@@ -84,6 +85,24 @@ var app = new Vue({
             this.validate();
             if (!Object.keys(this.validate_errors).length) return;
             else event.preventDefault();
+        }
+    },
+    watch: {
+        showModal: function(val){
+            if (!val) {
+                this.current_id = "";
+                this.template_name = "";
+                this.surname = "";
+                this.name = "";
+                this.company = "";
+                this.phone = "";
+                this.email = "";
+                this.region = "";
+                this.city = "";
+                this.street = "";
+                this.building = "";
+                this.flat = "";
+            }
         }
     }
 });

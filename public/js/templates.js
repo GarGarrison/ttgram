@@ -13,7 +13,7 @@ var app = new Vue({
         template: ""
         
     },
-    mounted: function(){
+    created: function(){
         var vm = this;
         axios.get(this.url_get_all)
             .then(function (response) {
@@ -52,6 +52,15 @@ var app = new Vue({
                 .catch(function (response) {
                     console.log(response)
                 })
+        }
+    },
+    watch: {
+        showModal: function(val){
+            if (!val) {
+                this.current_id = "";
+                this.template = "";
+                this.name = "";
+            }
         }
     }
 });
