@@ -46,7 +46,7 @@
                     </select>
                     
                 </div>
-                <kladr-block>
+                <kladr-block id="sender">
                     <div class="col s12 m6">
                         <span class="error" v-show="validate_errors['s_company']">@{{ validate_errors['s_company'] }}</span>
                         <input class="input-text uppercase" type="text" v-model="telegram_data.s_company" ref="telegram_data.s_company" name="s_company" placeholder="Компания" v-show="telegram_data.s_type=='jur'" data-value="{{ Auth::user() ? Auth::user()->company : '' }}"></div>
@@ -143,7 +143,7 @@
                     @endif
                 </div>
             </div>
-            <kladr-block class="row">
+            <kladr-block class="row" id="receiver">
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['r_surname']">@{{ validate_errors['r_surname'] }}</span>
                     <input class="input-text uppercase" type="text" v-model="telegram_data.r_surname"     name="r_surname"     placeholder="Фамилия"></div>

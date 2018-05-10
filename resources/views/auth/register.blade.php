@@ -16,7 +16,7 @@
             building : "",
             flat : ""
         },
-        mixins: [mount_mixin]
+        mixins: [mount_mixin, kladr_mixin]
     });
 </script>
 @endsection

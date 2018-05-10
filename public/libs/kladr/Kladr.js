@@ -82,5 +82,22 @@ Vue.component("kladr-block", {
             building: ""
         }
     },
+    watch: {
+        region: function(val) {
+            if (val == "7700000000000" || val == "7800000000000") {
+                var kladr_block_id = this.$el.getAttribute("id");
+                this.city = this.region;
+                this.$parent.federalCity(kladr_block_id);
+            }
+        }
+    },
     template: "<div><slot></slot></div>",
 });
+
+var kladr_mixin = {
+    methods: {
+        federalCity: function(kladr_block_id){
+            this.city = this.region;
+        }
+    }
+}

@@ -31,6 +31,7 @@ var app = new Vue({
                 console.log(response)
             })
     },
+    mixins: [kladr_mixin],
     methods: {
         deleteItem: function(id){
             vm = this;

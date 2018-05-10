@@ -1,7 +1,7 @@
 Vue.component("tlg-textarea", {
     data: function(){
         return {
-            text: ""
+            //
         }
     },
     props: ['name', 'placeholder', 'data-txt-style', 'data-wc-style', 'value'],
@@ -16,9 +16,9 @@ Vue.component("tlg-textarea", {
     },
     computed: {
         wordCount: function() {
-            var t = this.text.trim();
-            if (t == "") return 0;
-            else return t.split(" ").length;
+            var val = _.replace(this.value, /-/g, " ");
+            if (val == "") return 0;
+            else return val.split(" ").filter(function(item){ return item != ""}).length;
         }
     }
 });

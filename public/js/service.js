@@ -37,7 +37,7 @@ var ttgram = new Vue({
                 request_number: "",
                 validate_errors: {}
             },
-            mixins: [mount_mixin],
+            mixins: [mount_mixin, kladr_mixin],
             methods: {
                 next: function(){
                     this.step++;
@@ -46,6 +46,10 @@ var ttgram = new Vue({
                     var current_step = this.step;
                     var new_step = event.target.getAttribute('data-step');
                     if (new_step < current_step) this.step = new_step;
+                },
+                federalCity: function(kladr_block_id) {
+                    if (kladr_block_id == "sender") this.telegram_data.s_city = this.telegram_data.s_region;
+                    if (kladr_block_id == "receiver") this.telegram_data.r_city = this.telegram_data.r_region;
                 },
                 chooseReceiver: function() {
                     vm = this;
