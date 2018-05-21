@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Template extends Model
 {
     protected $fillable = [
-        'uid', 'name', 'template',
+        'uid', 'template_name', 'template',
     ];
 }

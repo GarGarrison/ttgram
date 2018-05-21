@@ -71,21 +71,10 @@ var app = new Vue({
                     console.log(response)
                 })
         },
-        validate: function(step) {
-            this.validate_errors = {};
-            var arr = ["name", "surname", "company", "region", "city", "street", "building"];
-            for (var i = 0; i < arr.length; i++) {
-                var field = arr[i];
-                var field_data = this.$data[field]
-                var reg_type = input_types[field];
-                var rule = validator[reg_type];
-                if (! rule['rgxp'].test(field_data)) this.$set(this.validate_errors, field, rule['text'])
-            }
-        },
         submit: function(event){
-            this.validate();
-            if (!Object.keys(this.validate_errors).length) return;
-            else event.preventDefault();
+            vm = this;
+            var check = Validator.validateRules(vm, vm.$data, true, ["template_name", "name", "surname", "region", "city", "street", "building"]);
+            if (!check) event.preventDefault();
         }
     },
     watch: {

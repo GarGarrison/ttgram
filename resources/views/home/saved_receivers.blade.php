@@ -21,6 +21,7 @@
             <input type="hidden" v-if="edit" name="current_id" v-model="current_id">
             <div class="row">
                 <div class="col s12">
+                    <span class="error" v-if="validate_errors['template_name']">@{{ validate_errors['template_name'] }}</span>
                     <input type="text" v-model="template_name" name="template_name" placeholder="Название шаблона">
                 </div>
             </div>

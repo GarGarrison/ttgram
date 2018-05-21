@@ -22,7 +22,6 @@ Route::get('/info', 'MainController@info')->name("info");
 Route::get('/service', 'MainController@service')->name("service");
 Route::post('/save_telegram', 'MainController@save_telegram')->name("save_telegram");
 Route::get('/kladr', 'MainController@kladr');
-// Route::get('/get_user_data', 'MainController@get_user_data');
 Route::get('/get_receiver_data/{rid}', 'MainController@get_receiver_data');
 Route::get('/get_template_data/{tid}', 'MainController@get_template_data');
 

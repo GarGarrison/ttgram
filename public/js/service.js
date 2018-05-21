@@ -83,21 +83,14 @@ var ttgram = new Vue({
                             console.log(response);
                         })
                 },
-                validate_rules: function(arr) {
-                    for (var i = 0; i < arr.length; i++) {
-                        var field = arr[i];
-                        var field_data = this.$data.telegram_data[field]
-                        var reg_type = input_types[field];
-                        var rule = validator[reg_type];
-                        if (! rule['rgxp'].test(field_data)) this.$set(this.validate_errors, field, rule['text'])
-                    }
-                },
                 validate_steps: function(step) {
-                    this.validate_errors = {};
-                    if (step == 1) this.validate_rules(["s_fio", "s_phone", "s_email", "notification"]);
-                    if (step == 1 && this.telegram_data.notification == "address") this.validate_rules(["s_region", "s_city", "s_street", "s_building"]);
-                    if (this.telegramStep) this.validate_rules(["r_name", "r_surname", "r_region", "r_city", "r_street", "r_building"]);
-                    if (step == 4) this.validate_rules(["text", "payment_type"]);
+                    var vm = this;
+                    var data = vm.$data.telegram_data;
+                    if (step == 1) Validator.validateRules(vm, data, true, ["s_fio", "s_phone", "s_email", "notification"]);
+                    if (step == 1 && this.telegram_data.notification == "address") Validator.validateRules(vm, data, false, ["s_region", "s_city", "s_street", "s_building"]);
+                    if (step == 1 && this.telegram_data.s_type == "jur") Validator.validateRules(vm, data, false, ["s_company"]);
+                    if (this.telegramStep) Validator.validateRules(vm, data, true, ["r_name", "r_surname", "r_region", "r_city", "r_street", "r_building"]);
+                    if (step == 4) Validator.validateRules(vm, data, true, ["text", "payment_type"]);
                 },
                 submit: function(){
                     this.validate_steps(this.step);

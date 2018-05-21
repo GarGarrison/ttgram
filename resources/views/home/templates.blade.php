@@ -16,13 +16,15 @@
     <modal v-if="showModal==true" @close="showModal = false">
         <h3 slot="header" v-if="!edit">Новый шаблон</h3>
         <h3 slot="header" v-if="edit">Редактирование шаблона</h3>
-        <form slot="body" action="{{ route('save_template') }}" method="post">
+        <form slot="body" action="{{ route('save_template') }}" method="post" @submit="submit">
             {{ csrf_field() }}
             <input type="hidden" v-if="edit" name="current_id" v-model="current_id">
             <div class="col s12">
-                <input type="text" v-model="name" name="name" placeholder="Название шаблона">
+                <span class="error" v-if="validate_errors['template_name']">@{{ validate_errors['template_name'] }}</span>
+                <input type="text" v-model="template_name" name="template_name" placeholder="Название шаблона">
             </div>
             <div class="col s12">
+                <span class="error" v-if="validate_errors['template']">@{{ validate_errors['template'] }}</span>
                 <tlg-textarea v-model="template" name="template" placeholder="Шаблон" data-txt-style="message" data-wc-style="word-count"></tlg-textarea>
             </div>
             <div class="col s12 m6">
@@ -35,11 +37,11 @@
     </modal>
     <div class="row">
         <div class="col s12">
-            <list-filter :original_list='tmp_list' :filter_field="'name'" data-empty="Шаблонов не найдено" placeholder="Фильтр по названию шаблона">
+            <list-filter :original_list='tmp_list' :filter_field="'template_name'" data-empty="Шаблонов не найдено" placeholder="Фильтр по названию шаблона">
                 <template slot-scope="{ row }">
                     <div class="col s6 m4">
                         <div class = "truncate list-element">
-                            <span class="left">@{{ row.name }}</span>
+                            <span class="left">@{{ row.template_name }}</span>
                             <i class="material-icons" @click="deleteItem(row.id)" title="удалить">close</i>
                         </div>
                     </div>

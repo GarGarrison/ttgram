@@ -9,7 +9,7 @@ var app = new Vue({
         showModal: false,
         edit: false,
         current_id: "",
-        name: "",
+        template_name: "",
         template: ""
         
     },
@@ -52,6 +52,11 @@ var app = new Vue({
                 .catch(function (response) {
                     console.log(response)
                 })
+        },
+        submit: function(event){
+            vm = this;
+            var check = Validator.validateRules(vm, vm.$data, true, ["template_name", "template"]);
+            if (!check) event.preventDefault();
         }
     },
     watch: {

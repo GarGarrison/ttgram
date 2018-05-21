@@ -16,8 +16,8 @@ class TemplatesTable extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('uid');
-            $table->string('name');     // название шаблона
-            $table->text('template');   // текст шаблона
+            $table->string('template_name');     // название шаблона
+            $table->text('template');            // текст шаблона
             $table->timestamps();
         });
     }
