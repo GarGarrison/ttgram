@@ -244,7 +244,7 @@
                     <select class="browser-default c-select" name="saved_receiver" v-model="saved_template" @change="chooseTemplate">
                         <option value="">Выбрать шаблон телеграммы</option>
                         @foreach( $templates as $t)
-                        <option value="{{ $t->id }}">{{ $t->name }}</option>
+                        <option value="{{ $t->id }}">{{ $t->template_name }}</option>
                         @endforeach
                     </select>
                 </div>

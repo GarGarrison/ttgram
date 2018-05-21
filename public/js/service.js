@@ -99,13 +99,12 @@ var ttgram = new Vue({
                 },
                 submit_finally: function() {
                     vm = this;
-                    vm.validate_steps(this.step);
+                    vm.validate_steps(vm.step);
                     if (!Object.keys(vm.validate_errors).length) {
-                        axios.post("/save_telegram/", vm.telegram_data)
+                        axios.post("/save_telegram", vm.telegram_data)
                             .then(function (response) {
                                 vm.request_number = response.data;
                                 vm.step = vm.last_step;
-                                //vm.telegram_data.text = data.template;
                             })
                             .catch(function (response) {
                                 console.log(response);

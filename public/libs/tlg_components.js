@@ -105,16 +105,21 @@ Vue.component("list-filter", {
     },
     computed: {
         list: function(){
-            // tсли фильтрующих полей несколько
+            // если фильтрующих полей несколько
             if (this.filter_field instanceof Array) {
                 var fields = this.fields;
                 var keys = Object.keys(fields);
+                // инициация. фильтрующие поля пустые, fields еще тоже пустой - вернуть оригинальный список
                 if (keys.length == 0) return this.original_list;
                 return this.original_list.filter(function(item){
                     var result = true;
                     for(var i = 0; i < keys.length; i++) {
                         var column = keys[i];
-                        result = result && (item[column].toLowerCase().indexOf(fields[column].toLowerCase()) > -1);
+                        var value = item[column];
+                        var condition = true;
+                        if (typeof(value) == "string") condition = (value.toLowerCase().indexOf(fields[column].toLowerCase()) > -1);
+                        if (typeof(value) == "number") condition = (fields[column] == value)
+                        result = result && condition;
                     }
                     return result;
                 });

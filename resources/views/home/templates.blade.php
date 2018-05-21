@@ -9,7 +9,7 @@
 @endsection
 
 @section("addition_to_menu")
-<li><a class="btn-floating blue" @click="showModal=true" title="Добавить новый шаблон"><i class="material-icons">add</i></a></li>
+<a class="btn-floating menu-button" @click="showModal=true" title="Добавить новый шаблон"><i class="material-icons">add</i></a>
 @endsection
 
 @section('home_content')

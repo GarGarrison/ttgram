@@ -316,7 +316,7 @@ textarea:focus {
 
 
 .word-count, .hint {
-  color: #bbb;
+  color: #777;
   font-size: 0.9em;
   text-align: right;
 }
