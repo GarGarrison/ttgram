@@ -20,8 +20,8 @@ class CreateTelegramsTable extends Migration
             $table->string('notification');                 // способ оповещения (телефон, почта ..)
             $table->string('s_fio', 150);                   // данные отправителя
             $table->string('s_company', 150)->nullable();
-            $table->string('s_phone', 20);
-            $table->string('s_email', 100);
+            $table->string('s_phone', 20)->nullable();
+            $table->string('s_email', 100)->nullable();
             $table->string('s_region', 100)->nullable();
             $table->string('s_city', 100)->nullable();
             $table->string('s_street', 100)->nullable();

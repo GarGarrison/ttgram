@@ -36,7 +36,10 @@ class MainController extends Controller
     public function save_telegram(Request $request){
         $user = Auth::user();
         $data = $request->all();
-        if ($user) $data["uid"] = $user->id;
+        if ($user) { 
+            $data["uid"] = $user->id;
+            $data["s_type"] = $user->user_type;
+        }
         $data["status"] = 0;
         $new_telegram = Telegram::create($data);
         return $new_telegram->id;
