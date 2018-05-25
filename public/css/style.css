@@ -326,6 +326,14 @@ textarea:focus {
   margin: 10px 0px;
   text-decoration: underline;
   cursor: pointer;
+  position: relative;
+}
+.insert-from-file input {
+  position: absolute;
+  right: 0;
+  top: -10px;
+  cursor: pointer;
+  opacity: 0;
 }
 .message {
   width: 100%;

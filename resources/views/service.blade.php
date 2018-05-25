@@ -1,6 +1,10 @@
 @extends('layouts.layout')
 
 @section("scripts")
+<script type="text/javascript">
+    //import {ru} from 'vuejs-datepicker/dist/locale'
+</script>
+<script src="/libs/vuejs-datepicker.min.js"></script>
 <script type="text/javascript" src="/js/service.js"></script>
 @endsection
 
@@ -24,6 +28,7 @@
             <div class="col s12 m4">
                 <h3>Отправитель</h3>
             </div>
+            @if( Auth::guest() )
             <div class="col s12 m4 radio-span">
                 <input id="r-fiz" class="with-gap" type="radio" v-model="telegram_data.s_type" ref="telegram_data.s_type" name="s_type" value="fiz" data-value="{{ Auth::user() ? Auth::user()->user_type : '' }}">
                 <label for="r-fiz">Физическое лицо</label>
@@ -32,6 +37,7 @@
                 <input id="r-jur" class="with-gap" type="radio" v-model="telegram_data.s_type" ref="telegram_data.s_type" name="s_type" value="jur" data-value="{{ Auth::user() ? Auth::user()->user_type : '' }}">
                 <label for="r-jur">Юридическое лицо</label>
             </div>
+            @endif
         </div>
         <div class="col s12 content-body">
             <div class="row">
@@ -206,7 +212,8 @@
                 <div class="col s12">
                     <div class="col s12 m6">
                         <span class="error" v-if="validate_errors['copy_date']">@{{ validate_errors['copy_date'] }}</span>
-                        <input class="input-text datepicker" type="text" onfocus="(this.type='date')" v-model="telegram_data.copy_date" name="copy_date" placeholder="Дата"></div>
+                        <vuejs-datepicker v-model="picker_copy_date" name="copy_date" placeholder="Дата" format="yyyy-MM-dd" :language="lang"></vuejs-datepicker>
+                    </div>
                 </div>
                 <div class="col s12">
                     <div class="col s12 m6">
@@ -215,10 +222,19 @@
                 </div>
                 <div class="col s12">
                     <div class="col s12 m6">
-                        <span class="error" v-if="validate_errors['copy_direction']">@{{ validate_errors['copy_direction'] }}</span>
-                        <select class="browser-default c-select" v-model="telegram_data.copy_direction" name="copy_direction">
+                        <select class="browser-default c-select" v-model="telegram_data.service_type" name="copy_direction">
                             <option value="copy_in">Входящая</option>
                             <option value="copy_out">Исходящая</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <div class="col s12 m6">
+                        <span class="error" v-if="validate_errors['payment_type']">@{{ validate_errors['payment_type'] }}</span>
+                        <select class="browser-default c-select" name="payment_type" v-model="telegram_data.payment_type">
+                            <option value="">Способ оплаты</option>
+                            <option value="beznal">Безналичный</option>
+                            <option value="nal">Наличный</option>
                         </select>
                     </div>
                 </div>
@@ -261,7 +277,10 @@
             
             <div class="row">
                 <div class="col s12">
-                    <a class="insert-from-file">Вставить из файла (*.txt, *.doc, *.rtf)</a>
+                    <a class="insert-from-file">
+                        Вставить из файла (*.txt)
+                        <input type="file" @change="processFile($event)">
+                    </a>
                     <div class="hint">Чтобы вставить текст из буфера, нажмите Ctrl + V</div>
                 </div>
             </div>
@@ -281,7 +300,7 @@
             <div class="row">
                 <div class="col s12 m6 offset-m6">
                     <button class="button">
-                        <span class="button-title">Далее</span>
+                        <span class="button-title">Получить код заказанной услуги</span>
                         <img src="/img/button.png">
                     </button>
                 </div>

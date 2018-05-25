@@ -14,7 +14,8 @@
 </style>
 <body>
     <div id="app">
-        <tlg-textarea v-model="text"></tlg-textarea>
+        <mask-input id="phone" name="phone" v-model="phone"></mask-input>
+        <input type="text" name="ttt">
     </div>
 </body>
 <script type="text/javascript">
@@ -22,7 +23,7 @@
     var app = new Vue({
             el: '#app',
             data: {
-                text: "",
+                phone: document.getElementById('phone').getAttribute('value'),
                 step: 0
             },
             methods: {

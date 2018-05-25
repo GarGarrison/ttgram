@@ -20,9 +20,7 @@ Vue.component("kladr-item", {
                                 <div class='kladr-list' v-show='variants.length > 0'>
                                     <div v-for='(v, index) in variants' 
                                          v-bind:key='index + v.id' 
-                                         v-bind:data-id='v.id' 
-                                         v-bind:name='v.name' 
-                                         v-bind:data-short='v.typeShort' 
+                                         v-bind:data-index='index'
                                          @mousedown='choose'>
                                          {{ compute_value(v.name,v.typeShort) }}
                                     </div>
@@ -42,9 +40,11 @@ Vue.component("kladr-item", {
                 function(event){
                     var vm = this;
                     vm.$emit('input', event.target.value);
-                    var parent_type = this.getParent(this.dataKladrType);
-                    var params = {"value": this.value, "type": this.dataKladrType,"parent_type": parent_type, "parent": this.$parent.$data[parent_type]}
-                    axios.get(this.url, { "params": params })
+                    var parent_type = vm.getParent(vm.dataKladrType);
+                    var parent_id = "";
+                    if (parent_type) parent_id = vm.$parent.$data[parent_type].id;
+                    var params = {"value": vm.value, "type": vm.dataKladrType,"parent_type": parent_type, "parent": parent_id}
+                    axios.get(vm.url, { "params": params })
                         .then(function (response) {
                             data = response.data;
                             vm.clear_variants();
@@ -56,19 +56,28 @@ Vue.component("kladr-item", {
                 }
         ),
         choose: function(event) {
-            var name = event.target.getAttribute('name');
-            var id = event.target.getAttribute('data-id');
-            var short = event.target.getAttribute('data-short');
-            var full_value = this.compute_value(name, short);
+            var index = event.target.getAttribute('data-index');
+            var item = this.variants[index];
+            item.compute_value = this.compute_value;
+            // var parent = item.parents[0];
+            // if (parent){
+            //     for (var i=0; i< item.parents.length; i++) {
+            //         var p = item.parents[i];
+            //         var full_parent_value = this.compute_value(parent.name, parent.typeShort);
+            //         console.log(p.name, p.id);
+            //     }
+            // }
+            var full_item_value = this.compute_value(item.name, item.typeShort);
+
             this.clear_variants();
-            this.$emit('input', full_value);
-            this.$parent.$data[this.dataKladrType] = id;
+            this.$emit('input', full_item_value);
+            this.$parent.$data[this.dataKladrType] = item;
         },
         clear_variants: function(event) {
             this.variants.splice(0);
         },
         compute_value: function(name, short) {
-            return name + " " + short + "."
+            return name + " " + short + ".";
         }
     }
 });
@@ -84,10 +93,19 @@ Vue.component("kladr-block", {
     },
     watch: {
         region: function(val) {
-            if (val == "7700000000000" || val == "7800000000000") {
+            if (val.id == "7700000000000" || val.id == "7800000000000") {
                 var kladr_block_id = this.$el.getAttribute("id");
                 this.city = this.region;
                 this.$root.federalCity(kladr_block_id);
+            }
+        },
+        city: function(val) {
+            if (this.region == "") {
+                var kladr_block_id = this.$el.getAttribute("id");
+                var parent = val.parents[0];
+                parent.compute_value = val.compute_value;
+                this.region = parent;
+                this.$root.updateRegionFromCity(parent, kladr_block_id);
             }
         }
     },
@@ -98,6 +116,11 @@ var kladr_mixin = {
     methods: {
         federalCity: function(kladr_block_id){
             this.city = this.region;
+        },
+        updateRegionFromCity: function(parent, kladr_block_id) {
+            var name = parent.name;
+            var short = parent.typeShort;
+            this.region = parent.compute_value(name, short);
         }
     }
 }

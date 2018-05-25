@@ -135,6 +135,28 @@ Vue.component("list-filter", {
     }
 })
 
+Vue.component("mask-input", {
+    data: function(){
+        return {
+
+        }
+    },
+    template: `
+        <input @input='input'  :name="name" :placeholder="placeholder"></input>
+    `,
+    props: ['name', 'placeholder', 'value'],
+    watch: {
+        value: function(newv, oldv) {
+            console.log(newv, oldv);
+        }
+    },
+    methods: {
+        input: function(event){
+            this.$emit('input', event.target.value);
+        }
+    }
+});
+
 
 var mount_mixin = {
     mounted: function(){

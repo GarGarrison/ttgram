@@ -27,21 +27,21 @@ class CreateTelegramsTable extends Migration
             $table->string('s_street', 100)->nullable();
             $table->string('s_building', 20)->nullable();
             $table->string('s_flat', 10)->nullable();
-            $table->string('r_name', 150);                  // данные получателя
-            $table->string('r_surname', 150);
+            $table->string('r_name', 150)->nullable();                  // данные получателя
+            $table->string('r_surname', 150)->nullable();
             $table->string('r_company', 150)->nullable();
             $table->string('r_phone', 20)->nullable();
             $table->string('r_email', 100)->nullable();
-            $table->string('r_region', 100);
-            $table->string('r_city', 100);
-            $table->string('r_street', 100);
-            $table->string('r_building', 20);
+            $table->string('r_region', 100)->nullable();
+            $table->string('r_city', 100)->nullable();
+            $table->string('r_street', 100)->nullable();
+            $table->string('r_building', 20)->nullable();
             $table->string('r_flat', 10)->nullable();
             $table->string('service_type');                 // тип услуги (телеграмма, копия ..)
             $table->text('text')->nullable();               // текст сообщения
             $table->date('copy_date')->nullable();
             $table->string('copy_number')->nullable();
-            $table->string('copy_direction')->nullable();
+            // $table->string('copy_direction')->nullable();
             $table->string('payment_type');                 // способ оплаты
             $table->integer('status');                          // статус услуги (готовность)
             $table->timestamps();

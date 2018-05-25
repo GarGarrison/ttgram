@@ -66,7 +66,7 @@ class MainController extends Controller
         $query->ContentType = $type;
         $query->ParentType = $parent_type;
         $query->ParentId = $parent;
-        $query->WithParent = false;;
+        $query->WithParent = true;
         $query->Limit = 5;
 
         $arResult = $api->QueryToArray($query);
