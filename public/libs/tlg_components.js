@@ -47,14 +47,15 @@ Vue.component("menu-button", {
 Vue.component("modal", {
     data: function(){
         return {
-            //
+            maskHeight: {},
+            msgHeight: {}
         }
     },
     template: `
         <transition name="modal">
-            <div class="modal-mask" @click="maskClick">
+            <div class="modal-mask" @click="maskClick" v-bind:style="maskHeight">
               <div class="modal-wrapper">
-                <div class="modal-container">
+                <div class="modal-container" v-bind:style="msgHeight">
                   <div class="modal-header row">
                     <i class="material-icons right pointer" @click="$emit('close')">close</i>
                     <slot name="header">
@@ -72,6 +73,12 @@ Vue.component("modal", {
             </div>
           </transition>
     `,
+    mounted: function() {
+        var h = document.body.clientHeight;
+        var max_h = window.innerHeight * 0.9;
+        this.$set(this.maskHeight, "height", h+"px");
+        //this.$set(this.msgHeight, "max-height", max_h+"px");
+    },
     methods: {
         maskClick: function(event){
             if (event.target.classList.contains('modal-wrapper')) this.$emit('close');
@@ -81,20 +88,17 @@ Vue.component("modal", {
 
 Vue.component("list-filter", {
     template: ` <div>
-                    <div class='row'>
-                        <slot name="inputs" :fields="fields">
-                            <div class='col s12'>
-                                <input type="text" :placeholder="placeholder" :class="dataInputStyle" v-model="search">
-                            </div>
-                        </slot>
-                    </div>
-                    <div class='row' v-for="item in list" :key="item.id">
-                        <slot :row="item">
-                        </slot>
-                    </div>
-                    <div class='row' v-if="list.length == 0">
-                        <div class="col s12">{{ dataEmpty }}</div>
-                    </div>
+                    <table class="filter_table">
+                            <slot name="inputs" :fields="fields">
+                                <th colspan="2">
+                                    <input type="text" :placeholder="placeholder" :class="dataInputStyle" v-model="search">
+                                </th>
+                            </slot>
+                            <tr v-for="item in list" :key="item.id">
+                                <slot :row="item"></slot>
+                            </tr>
+                    </table>
+                    <h6 v-if="list.length == 0">{{ dataEmpty }}</h6>
                 </div>`,
     props: ['original_list', 'filter_field', 'data-empty', 'placeholder', 'data-input-style'],
     data: function(argument) {
@@ -117,8 +121,8 @@ Vue.component("list-filter", {
                         var column = keys[i];
                         var value = item[column];
                         var condition = true;
-                        if (typeof(value) == "string") condition = (value.toLowerCase().indexOf(fields[column].toLowerCase()) > -1);
-                        if (typeof(value) == "number") condition = (fields[column] == value)
+                        if (typeof(value) == "string" && fields[column] != "") condition = (value.toLowerCase().indexOf(fields[column].toLowerCase()) > -1);
+                        if (typeof(value) == "number" && fields[column] != "") condition = (fields[column] == value)
                         result = result && condition;
                     }
                     return result;
@@ -135,20 +139,22 @@ Vue.component("list-filter", {
     }
 })
 
-Vue.component("mask-input", {
+Vue.component("mask-phone", {
     data: function(){
         return {
 
         }
     },
     template: `
-        <input @input='input'  :name="name" :placeholder="placeholder"></input>
+        <input :id="id" type="text" @change='input' :class="dataClass" :name="name" :placeholder="placeholder" />
     `,
-    props: ['name', 'placeholder', 'value'],
-    watch: {
-        value: function(newv, oldv) {
-            console.log(newv, oldv);
-        }
+    props: ['data-class', 'id', 'name', 'placeholder', 'value'],
+    mounted () {
+        new Cleave(this.$el, {
+            prefix: '+7',
+            phone: true,
+            phoneRegionCode: 'RU'
+        });
     },
     methods: {
         input: function(event){

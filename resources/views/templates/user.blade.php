@@ -20,16 +20,31 @@
         <span class="error">{{ $errors->first('company') }}</span>
         @endif
         <input class="input-text uppercase" type="text" name="company" ref="company" v-model="company"     placeholder="Компания" data-value="{{ Auth::user() ? Auth::user()->company: old('company') }}"></div>
+    <div class="col s12 m6" v-show="user_type=='jur'">
+        @if ($errors->has('inn'))
+        <span class="error">{{ $errors->first('inn') }}</span>
+        @endif
+        <input class="input-text uppercase" type="text" name="inn" ref="inn" v-model="inn"     placeholder="ИНН" data-value="{{ Auth::user() ? Auth::user()->inn: old('inn') }}"></div>
+    <div class="col s12 m6" v-show="user_type=='jur'">
+        @if ($errors->has('kpp'))
+        <span class="error">{{ $errors->first('kpp') }}</span>
+        @endif
+        <input class="input-text uppercase" type="text" name="kpp" ref="kpp" v-model="kpp"     placeholder="КПП" data-value="{{ Auth::user() ? Auth::user()->kpp: old('kpp') }}"></div>
     <div class="col s12 m6">
         @if ($errors->has('phone'))
         <span class="error">{{ $errors->first('phone') }}</span>
         @endif
-        <input class="input-text"          type="text" name="phone" ref="phone" v-model="phone"   placeholder="Телефон" data-value="{{ Auth::user() ? Auth::user()->phone: old('phone') }}"></div>
+        <mask-phone id="phone" v-model="phone" name="phone" placeholder="Телефон" value="{{ Auth::user() ? Auth::user()->phone: old('phone') }}"></mask-phone></div>
     <div class="col s12 m6">
         @if ($errors->has('email'))
         <span class="error">{{ $errors->first('email') }}</span>
         @endif
         <input class="input-text"           type="email" name="email" ref="email" v-model="email"   placeholder="E-mail" data-value="{{ Auth::user() ? Auth::user()->email: old('email') }}"></div>
+    <div class="col s12 m6">
+        @if ($errors->has('country'))
+        <span class="error">{{ $errors->first('country') }}</span>
+        @endif
+        <input class="input-text uppercase" type="text" name="country" ref="country" v-model="country"     placeholder="Страна" data-value="{{ Auth::user() ? Auth::user()->country: old('country') }}"></div>
     <div class="col s12 m6">
         @if ($errors->has('region'))
         <span class="error">{{ $errors->first('region') }}</span>

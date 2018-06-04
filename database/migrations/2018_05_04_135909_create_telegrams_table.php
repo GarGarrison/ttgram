@@ -41,9 +41,11 @@ class CreateTelegramsTable extends Migration
             $table->text('text')->nullable();               // текст сообщения
             $table->date('copy_date')->nullable();
             $table->string('copy_number')->nullable();
-            // $table->string('copy_direction')->nullable();
             $table->string('payment_type');                 // способ оплаты
-            $table->integer('status');                          // статус услуги (готовность)
+            $table->string('blank')->nullable();            // вид бланка (музыкальный, детский и тд)
+            $table->date('delivery_date')->nullable();      // дата вручения
+            $table->boolean('restante')->nullable();        // до востребования
+            $table->integer('status');                      // статус услуги (готовность)
             $table->timestamps();
         });
     }

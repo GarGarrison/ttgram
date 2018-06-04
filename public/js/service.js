@@ -1,25 +1,3 @@
-// window.onload = function() {
-//         var fileInput = document.getElementById('fileInput');
-//         var fileDisplayArea = document.getElementById('fileDisplayArea');
-
-//         fileInput.addEventListener('change', function(e) {
-//             var file = fileInput.files[0];
-//             var textType = /text.*/;
-
-//             if (file.type.match(textType)) {
-//                 var reader = new FileReader();
-
-//                 reader.onload = function(e) {
-//                     fileDisplayArea.innerText = reader.result;
-//                 }
-
-//                 reader.readAsText(file);    
-//             } else {
-//                 fileDisplayArea.innerText = "File not supported!"
-//             }
-//         });
-// }
-
 var RU = {
     language: 'Russian',
     months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
@@ -30,15 +8,35 @@ var RU = {
     yearSuffix: ''
 };
 
+var tlg_abbrs = {
+    ",": " зпт ",
+    ".": " тчк ",
+    "'": " квч ",
+    '"': " квч ",
+    "(": " скб ",
+    ")": " скб ",
+    "!": " восклицательный знак ",
+    "?": " знак вопроса ",
+    "%": " процент ",
+    "-": " минус "
+}
+
 var ttgram = new Vue({
             el: '#ttgram',
             data: {
                 step:1,
                 last_step:5,
-                lang: RU,
-                saved_receiver: "",
-                saved_template: "",
-                picker_copy_date: "",
+                lang: RU,                       // язык для пикера
+                saved_receiver: "",             // id выбранного адресата
+                saved_template: "",             // id выбранного шаблона телеграммы
+                picker_copy_date: "",           // дата копии телеграммы из пикера (типа Date)
+                picker_delivery_date: "",       // дата уведомления о доставке из пикера (типа Date)
+                save_myself: false,             // свич использовать данные для регистрации
+                password: "",                   // пароль для регистрации
+                confirm_password: "",           // подтверждение пароля
+                save_receiver: false,           // свич сохранить адресата
+                template_name: "",              // название шаблона для адресата
+                telegraf_abbr: false,           // включить телеграфные сокращения
                 telegram_data: {
                     s_type: "fiz",
                     s_fio: "",
@@ -61,19 +59,31 @@ var ttgram = new Vue({
                     s_flat: "",
                     r_flat: "",
                     notification: "",
+                    notification_quick: "",
                     service_type: "telegram",
                     payment_type: "",
                     text: "",
+                    word_count: 0,
                     copy_date: "",
-                    copy_number: ""
+                    copy_number: "",
+                    delivery_date: "",
+                    restante: false,
+                    blank: ""
                 },
                 request_number: "",
+                showModal: false,
                 validate_errors: {}
             },
             mixins: [mount_mixin, kladr_mixin],
             watch: {
                 picker_copy_date: function(v) {
-                    this.telegram_data.copy_date = v.toISOString().slice(0,10)
+                    this.telegram_data.copy_date = this.process_date(v)
+                },
+                picker_delivery_date: function(v) {
+                    this.telegram_data.delivery_date = this.process_date(v)
+                },
+                "telegram_data.text": function(){
+                    if (this.telegraf_abbr) this.telegraf_abbr_replace();
                 }
             },
             methods: {
@@ -113,7 +123,9 @@ var ttgram = new Vue({
                             vm.telegram_data.r_name = data.name;
                             vm.telegram_data.r_surname = data.surname;
                             vm.telegram_data.r_company = data.company;
-                            vm.telegram_data.r_phone = data.phone;
+                            //vm.telegram_data.r_phone = data.phone;
+                            // костыль - плохо свзана модель, значения инпута по-другому не обновляется
+                            document.getElementById("r_phone").value = data.phone;
                             vm.telegram_data.r_email = data.email;
                             vm.telegram_data.r_region = data.region;
                             vm.telegram_data.r_city = data.city;
@@ -137,6 +149,25 @@ var ttgram = new Vue({
                             console.log(response);
                         })
                 },
+                telegraf_abbr_replace: function(){
+                    var text = this.telegram_data.text;
+                    var flag = this.telegraf_abbr;
+                    for (k in tlg_abbrs) {
+                        var r = "";
+                        var pattern = tlg_abbrs[k];
+                        if (k == "(") r = /\(/g;
+                        else if (k == ")") r = /\)/g;
+                        else if (k == ".") r = /\./g;
+                        else if (k == "?") r = /\?/g;
+                        else r = new RegExp(k, "g");
+                        if (!flag) {
+                            r = new RegExp(tlg_abbrs[k], "g");
+                            pattern = k;
+                        }
+                        text = text.replace(r, pattern);
+                    }
+                    this.telegram_data.text = text.replace( /  /g, " ");
+                },
                 validate_steps: function(step) {
                     var vm = this;
                     var data = vm.$data.telegram_data;
@@ -153,7 +184,17 @@ var ttgram = new Vue({
                 },
                 submit: function(){
                     this.validate_steps(this.step);
-                    if (!Object.keys(this.validate_errors).length) this.next();
+                    var validate_check = Object.keys(this.validate_errors).length;
+                    if (validate_check) return;
+                    if (this.telegramStep && this.save_receiver) {
+                        this.showModal=true;
+                        return;
+                    }
+                    if (this.step == 1 && this.save_myself) {
+                        this.showModal=true;
+                        return;
+                    }
+                    this.next();
                 },
                 submit_finally: function() {
                     vm = this;
@@ -168,6 +209,71 @@ var ttgram = new Vue({
                                 console.log(response);
                             })
                     }
+                },
+                submit_receiver: function(){
+                    var vm = this;
+                    var url = vm.$refs["reciever_form"].getAttribute("action");
+                    data = {
+                        template_name: vm.template_name,
+                        name: vm.telegram_data.r_name,
+                        surname: vm.telegram_data.r_surname,
+                        company: vm.telegram_data.r_company,
+                        phone: vm.telegram_data.r_phone,
+                        email: vm.telegram_data.r_email,
+                        region: vm.telegram_data.r_region,
+                        city: vm.telegram_data.r_city,
+                        street: vm.telegram_data.r_street,
+                        building: vm.telegram_data.r_building,
+                        flat: vm.telegram_data.r_flat
+                    };
+                    axios.post(url, data)
+                            .then(function (response) {
+                                vm.showModal = false;
+                                vm.next();
+                            })
+                            .catch(function (response) {
+                                console.log(response);
+                            })
+
+                },
+                submit_register: function(){
+                    var vm = this;
+                    var url = vm.$refs["register_form"].getAttribute("action");
+                    data = {
+                        user_type: vm.telegram_data.s_type,
+                        fio: vm.telegram_data.s_fio,
+                        company: vm.telegram_data.s_company,
+                        phone: vm.telegram_data.s_phone,
+                        email: vm.telegram_data.s_email,
+                        region: vm.telegram_data.s_region,
+                        city: vm.telegram_data.s_city,
+                        street: vm.telegram_data.s_street,
+                        building: vm.telegram_data.s_building,
+                        flat: vm.telegram_data.s_flat,
+                        password: vm.password,
+                        password_confirmation: vm.confirm_password
+                    };
+                    axios.post(url, data)
+                            .then(function (response) {
+                                console.log(response);
+                                vm.showModal = false;
+                                vm.next();
+                            })
+                            .catch(function (response) {
+                                var errs = response.data.errors
+                                if (errs) {
+                                    var keys = Object.keys(errs);
+                                    for (var i = 0; i < keys.length; i++) {
+                                        var field = keys[i];
+                                        vm.$set(vm.validate_errors, field, errs[field][0])
+                                    }
+                                }
+                                console.log(response);
+                            })
+
+                },
+                process_date: function(d){
+                    return d.toISOString().slice(0,10)
                 }
             },
             computed: {

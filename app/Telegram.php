@@ -35,6 +35,9 @@ class Telegram extends Model
         'copy_number',
         'copy_direction',
         'payment_type',
+        'blank',
+        'delivery_date',
+        'restante',
         'status'
     ];
 }

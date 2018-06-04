@@ -39,18 +39,14 @@
         <div class="col s12">
             <list-filter :original_list='tmp_list' :filter_field="'template_name'" data-empty="Шаблонов не найдено" placeholder="Фильтр по названию шаблона">
                 <template slot-scope="{ row }">
-                    <div class="col s6 m4">
-                        <div class = "truncate list-element">
-                            <span class="left">@{{ row.template_name }}</span>
-                            <i class="material-icons" @click="deleteItem(row.id)" title="удалить">close</i>
-                        </div>
-                    </div>
-                    <div class="col s6 m8">
-                        <div class = "truncate list-element">
-                            @{{ row.template }}
-                            <i class="material-icons" @click="editItem(row.id)" title="редактировать">mode_edit</i>
-                        </div>
-                    </div>
+                    <td style="width: 30%">
+                        <span class="left">@{{ row.template_name }}</span>
+                        <i class="material-icons" @click="deleteItem(row.id)" title="удалить">close</i>
+                    </td>
+                    <td style="width: 70%">
+                        @{{ row.template }}
+                        <i class="material-icons" @click="editItem(row.id)" title="редактировать">mode_edit</i>
+                    </td>
                 </template>
             </list-filter>
         </div>

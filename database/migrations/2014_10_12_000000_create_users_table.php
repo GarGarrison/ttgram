@@ -18,8 +18,11 @@ class CreateUsersTable extends Migration
             $table->string('user_type', 3);
             $table->string('fio', 150);
             $table->string('company', 150)->nullable();
+            $table->string('inn', 12)->nullable();
+            $table->string('kpp', 12)->nullable();
             $table->string('phone', 20)->nullable();
             $table->string('email', 100)->unique();
+            $table->string('country', 100)->nullable();
             $table->string('region', 100)->nullable();
             $table->string('city', 100)->nullable();
             $table->string('street', 100)->nullable();

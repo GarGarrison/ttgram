@@ -42,17 +42,18 @@ class HomeController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator->messages());
             }
-            $user->user_type = $data['user_type'];
-            $user->fio = $data['fio'];
-            $user->company = $data['company'];
-            $user->phone = $data['phone'];
-            $user->region = $data['region'];
-            $user->city = $data['city'];
-            $user->street = $data['street'];
-            $user->building = $data['building'];
-            $user->flat = $data['flat'];
-            if (isset($data["password"])) $user->password = bcrypt($data['password']);
-            $user->save();
+            if (isset($data["password"])) $data['password'] = bcrypt($data['password']);
+            $user->update($data);
+            // $user->user_type = $data['user_type'];
+            // $user->fio = $data['fio'];
+            // $user->company = $data['company'];
+            // $user->phone = $data['phone'];
+            // $user->region = $data['region'];
+            // $user->city = $data['city'];
+            // $user->street = $data['street'];
+            // $user->building = $data['building'];
+            // $user->flat = $data['flat'];
+            // $user->save();
         }
         return view('home.profile');
     }

@@ -8,18 +8,18 @@
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
     <script type="text/javascript" src="/libs/kladr/Kladr.js"></script>
     <script type="text/javascript" src="/libs/tlg_components.js"></script>
+    <script type="text/javascript" src="/libs/cleave/cleave.min.js"></script>
+    <script type="text/javascript" src="/libs/cleave/addons/cleave-phone.ru.js"></script>
 </head>
 <style type="text/css">
 
 </style>
 <body>
     <div id="app">
-        <mask-input id="phone" name="phone" v-model="phone"></mask-input>
-        <input type="text" name="ttt">
+        <mask-phone id="phone" name="phone" v-model="phone" placeholder="phone"></mask-phone>
     </div>
 </body>
 <script type="text/javascript">
-    // var bus = new Vue();
     var app = new Vue({
             el: '#app',
             data: {

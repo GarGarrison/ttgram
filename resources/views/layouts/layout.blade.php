@@ -13,6 +13,8 @@
     <script type="text/javascript" src="/libs/vue_dev.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <script type="text/javascript" src="/libs/cleave/cleave.min.js"></script>
+    <script type="text/javascript" src="/libs/cleave/addons/cleave-phone.ru.js"></script>
     <script type="text/javascript" src="/libs/kladr/Kladr.js"></script>
     <script type="text/javascript" src="/libs/tlg_components.js"></script>
     <script type="text/javascript" src="/js/validation.js"></script>
@@ -21,12 +23,12 @@
     <div id="ttgram" class="container">
         <div class="top-strip">
             <a href="{{ route('info') }}"><img class="table-info" src="/img/info.png"></a>
+            <a href="{{ route('profile') }}"><img class="user-info" src="/img/account.png"></a>
             @if (Auth::user())
                 
                 <div class="auth">
                     <a href="{{ route('logout') }}"><img src="/img/auth.png"><span class="top-span">Выйти</span></a>
                 </div>
-                <a href="{{ route('profile') }}"><img class="user-info" src="/img/account.png"></a>
             @else
                 <div class="auth">
                     <a href="{{ route('login') }}"><img src="/img/auth.png"><span class="top-span">Вход</span></a>

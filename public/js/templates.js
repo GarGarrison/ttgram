@@ -46,7 +46,7 @@ var app = new Vue({
             this.current_id = id;
             axios.get(this.url_get + id)
                 .then(function (response) {
-                    vm.name = response.data.name;
+                    vm.template_name = response.data.template_name;
                     vm.template = response.data.template;
                 })
                 .catch(function (response) {
@@ -64,7 +64,7 @@ var app = new Vue({
             if (!val) {
                 this.current_id = "";
                 this.template = "";
-                this.name = "";
+                this.template_name = "";
             }
         }
     }

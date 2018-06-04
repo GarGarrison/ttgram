@@ -13,32 +13,26 @@
         <div class="col s12">
             <list-filter :original_list='history_list' :filter_field="[]" data-empty="Услуг не найдено">
                 <template slot="inputs" slot-scope="inputList">
-                    <div class="col s4">
-                        <input type="text" placeholder="Фильтр по дате" v-model="inputList.fields.created_at">
-                    </div>
-                    <div class="col s4">
-                        <input type="text" placeholder="Фильтр услуге" v-model="inputList.fields.service_type">
-                    </div>
-                    <div class="col s4">
-                        <input type="text" placeholder="Фильтр по статусу" v-model="inputList.fields.status">
-                    </div>
+                    <tr>
+                        <th class="list-element">
+                            <input type="text" placeholder="Фильтр по номеру" v-model="inputList.fields.id">
+                        </th>
+                        <th class="list-element">
+                            <input type="text" placeholder="Фильтр по дате" v-model="inputList.fields.created_at">
+                        </th>
+                        <th class="list-element">
+                            <input type="text" placeholder="Фильтр услуге" v-model="inputList.fields.service_type">
+                        </th>
+                        <th class="list-element">
+                            <input type="text" placeholder="Фильтр по статусу" v-model="inputList.fields.status">
+                        </th>
+                    </tr>
                 </template>
                 <template slot-scope="{ row }">
-                    <div class="col s4">
-                        <div class = "truncate list-element">
-                            @{{ row.created_at }}
-                        </div>
-                    </div>
-                    <div class="col s4">
-                        <div class = "truncate list-element">
-                            @{{ row.service_type }}
-                        </div>
-                    </div>
-                    <div class="col s4">
-                        <div class = "truncate list-element">
-                            @{{ row.status }}
-                        </div>
-                    </div>
+                    <td>@{{ row.id }}</td>
+                    <td>@{{ row.created_at }}</td>
+                    <td>@{{ row.service_type }}</td>
+                    <td>@{{ row.status }}</td>
                 </template>
             </list-filter>
         </div>

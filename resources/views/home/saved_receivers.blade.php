@@ -38,7 +38,7 @@
                     <input class="input-text uppercase" type="text" v-model="company" name="company" placeholder="Компания"></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['phone']">@{{ validate_errors['phone'] }}</span>
-                    <input class="input-text"           type="text" v-model="phone"   name="phone"   placeholder="Телефон"></div>
+                    <mask-phone id="phone" v-model="phone" name="phone" placeholder="Телефон"></mask-phone></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['email']">@{{ validate_errors['email'] }}</span>
                     <input class="input-text"           type="email" v-model="email"   name="email"   placeholder="E-mail"></div>
@@ -73,20 +73,26 @@
     </modal>
     <div class="row">
         <div class="col s12">
-            <list-filter :original_list='tmp_list' :filter_field="'template_name'" data-empty="Адресатов не найдено" placeholder="Фильтр по названию шаблона">
+            <list-filter :original_list='tmp_list' :filter_field="[]" data-empty="Адресатов не найдено">
+                <template slot="inputs" slot-scope="inputList">
+                    <tr>
+                        <th>
+                            <input type="text" placeholder="Фильтр по названию шаблона" v-model="inputList.fields.template_name">
+                        </th>
+                        <th>
+                            <input type="text" placeholder="Фильтр по ФИО" v-model="inputList.fields.surname">
+                        </th>
+                    </tr>
+                </template>
                 <template slot-scope="{ row }">
-                    <div class="col s6 m4">
-                        <div class = "truncate list-element">
+                    <td>
                             <span class="left">@{{ row.template_name }}</span>
                             <i class="material-icons" @click="deleteItem(row.id)" title="удалить">close</i>
-                        </div>
-                    </div>
-                    <div class="col s6 m8">
-                        <div class = "truncate list-element">
-                            @{{ row.surname + " " + row.city }}
+                    </td>
+                    <td>
+                            @{{ row.surname + " " + row.name + " " + row.city }}
                             <i class="material-icons" @click="editItem(row.id)" title="редактировать">mode_edit</i>
-                        </div>
-                    </div>
+                    </td>
                 </template>
             </list-filter>
         </div>

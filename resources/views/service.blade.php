@@ -21,6 +21,46 @@
 
 
 @section("content")
+<modal v-if="showModal==true && telegramStep" @close="showModal=false">
+    <h3 slot="header">Новый шаблон</h3>
+    <form slot="body" action="{{ route('save_receiver') }}" ref="reciever_form" @submit.prevent="submit_receiver">
+        {{ csrf_field() }}
+        <div class="col s12">
+            <span class="error" v-if="validate_errors['template_name']">@{{ validate_errors['template_name'] }}</span>
+            <input type="text" v-model="template_name" name="template_name" placeholder="Название шаблона">
+        </div>
+        <div class="col s12 m6">
+            <button class="button">
+                <span class="button-title">Сохранить</span>
+                <img src="/img/button.png">
+            </button>
+        </div>
+    </form>
+</modal>
+<modal v-if="showModal==true && step==1" @close="showModal=false">
+    <h3 slot="header">Регистрация</h3>
+    <form slot="body" action="{{ route('register') }}" ref="register_form" @submit.prevent="submit_register">
+        {{ csrf_field() }}
+        <div class="col s12">
+            <span class="error" v-if="validate_errors['email']">@{{ validate_errors['email'] }}</span>
+            <input type="text" v-model="telegram_data.s_email" placeholder="E-mail">
+        </div>
+        <div class="col s12">
+            <span class="error" v-if="validate_errors['password']">@{{ validate_errors['password'] }}</span>
+            <input type="password" v-model="password" placeholder="Пароль">
+        </div>
+        <div class="col s12">
+            <span class="error" v-if="validate_errors['password_confirmation']">@{{ validate_errors['password_confirmation'] }}</span>
+            <input type="password" v-model="confirm_password" placeholder="Подтверждение">
+        </div>
+        <div class="col s12 m6">
+            <button class="button">
+                <span class="button-title">Сохранить</span>
+                <img src="/img/button.png">
+            </button>
+        </div>
+    </form>
+</modal>
 <div class="row step-container">
     <transition name="steps" mode="out-in">
     <form v-if="step==1" @submit.prevent="submit" key="1">
@@ -50,7 +90,6 @@
                         <option value="email">По email</option>
                         <option value="no">Без уведомления</option>
                     </select>
-                    
                 </div>
                 <kladr-block id="sender">
                     <div class="col s12 m6">
@@ -61,7 +100,8 @@
                         <input class="input-text uppercase" type="text" v-model="telegram_data.s_fio" ref="telegram_data.s_fio" name="s_fio"    placeholder="ФИО"  data-value="{{ Auth::user() ? Auth::user()->fio : '' }}"></div>
                     <div class="col s12 m6">
                         <span class="error" v-show="validate_errors['s_phone']">@{{ validate_errors['s_phone'] }}</span>
-                        <input class="input-text"           type="text" v-model="telegram_data.s_phone" ref="telegram_data.s_phone"  name="s_phone"   placeholder="Телефон" data-value="{{ Auth::user() ? Auth::user()->phone : '' }}"></div>
+                        <mask-phone v-model="telegram_data.s_phone" name="s_phone"   placeholder="Телефон" value="{{ Auth::user() ? Auth::user()->phone : '' }}"></mask-phone>
+                    </div>
                     <div class="col s12 m6">
                         <span class="error" v-show="validate_errors['s_email']">@{{ validate_errors['s_email'] }}</span>
                         <input class="input-text"           type="email" v-model="telegram_data.s_email"   ref="telegram_data.s_email" name="s_email"   placeholder="E-mail" data-value="{{ Auth::user() ? Auth::user()->email : '' }}"></div>
@@ -87,7 +127,7 @@
                     @if(Auth::guest())
                     <div class="switch right">
                         <label>
-                          <input type="checkbox" id="registration" checked="checked">
+                          <input type="checkbox" id="registration" v-model="save_myself">
                           Зарегистрироваться используя эти данные
                           <span class="lever"></span>
                         </label>
@@ -161,7 +201,7 @@
                     <input class="input-text uppercase" type="text" v-model="telegram_data.r_company" name="r_company" placeholder="Компания"></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['r_phone']">@{{ validate_errors['r_phone'] }}</span>
-                    <input class="input-text"           type="text" v-model="telegram_data.r_phone"   name="r_phone"   placeholder="Телефон"></div>
+                    <mask-phone id="r_phone" v-model="telegram_data.r_phone" name="r_phone" placeholder="Телефон"></mask-phone></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['r_email']">@{{ validate_errors['r_email'] }}</span>
                     <input class="input-text"           type="email" v-model="telegram_data.r_email"   name="r_email"   placeholder="E-mail"></div>
@@ -188,7 +228,7 @@
                 <div class="col s12 m6">
                     <div class="switch right">
                         <label>
-                          <input type="checkbox" id="save_receiver" checked="checked">
+                          <input type="checkbox" id="save_receiver" v-model="save_receiver">
                           Сохранить данные адресата
                           <span class="lever"></span>
                         </label>
@@ -265,14 +305,6 @@
                     </select>
                 </div>
                 @endif
-                <div class="col s6">
-                    <span class="error" v-if="validate_errors['payment_type']">@{{ validate_errors['payment_type'] }}</span>
-                    <select class="browser-default c-select" name="payment_type" v-model="telegram_data.payment_type">
-                        <option value="">Способ оплаты</option>
-                        <option value="beznal">Безналичный</option>
-                        <option value="nal">Наличный</option>
-                    </select>
-                </div>
             </div>
             
             <div class="row">
@@ -292,13 +324,61 @@
                 <div class="switch right">
                     <label>
                       Включить телеграфные сокращения
-                      <input type="checkbox" id="telegraf_abbr">
+                      <input type="checkbox" v-model="telegraf_abbr" @change="telegraf_abbr_replace">
                       <span class="lever"></span>
                     </label>
                 </div> 
             </div>
             <div class="row">
-                <div class="col s12 m6 offset-m6">
+                <div class="col s12 m6">
+                    <span class="error" v-if="validate_errors['payment_type']">@{{ validate_errors['payment_type'] }}</span>
+                    <select class="browser-default c-select" name="payment_type" v-model="telegram_data.payment_type">
+                        <option value="">Способ оплаты</option>
+                        <option value="beznal">Безналичный</option>
+                        <option value="nal">Наличный</option>
+                    </select>
+                </div>
+                <div class="col s12 m6">
+                    <select class="browser-default c-select" name="payment_type" v-model="telegram_data.blank">
+                        <option value="">Бланк</option>
+                        <option value="люкс">Художественный </option>
+                        <option value="люкс/в">Художественный формата А4</option>
+                        <option value="люкс/и">Детский</option>
+                        <option value="люкс/м">Музыкальный</option>
+                        <option value="люкс/м/и">Детский музыкальный</option>
+                        <option value="делюкс">Траурный</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6">
+                    <span class="error" v-if="validate_errors['notification_quick']">@{{ validate_errors['notification_quick'] }}</span>
+                    <select class="browser-default c-select" name="notification_quick" v-model="telegram_data.notification_quick">
+                        <option value="">Уведомление о доставке</option>
+                        <option value="0">Обыкновенное</option>
+                        <option value="1">Срочное</option>
+                    </select>
+                </div>
+                <div class="col s12 m6">
+                    <div class="col s2">
+                        <div class="valign-text">Вручить</div>
+                    </div>
+                    <div class="col s10">
+                        <vuejs-datepicker v-model="picker_delivery_date" name="copy_date" placeholder="Дата" format="yyyy-MM-dd" :language="lang"></vuejs-datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="switch right">
+                        <label>
+                          До востребования
+                          <input type="checkbox" name="restante" v-model="telegram_data.restante">
+                          <span class="lever"></span>
+                        </label>
+                    </div> 
+                </div>
+                <div class="col s12 m6">
                     <button class="button">
                         <span class="button-title">Получить код заказанной услуги</span>
                         <img src="/img/button.png">
@@ -310,7 +390,7 @@
     <form class="step" v-if="step==5" @submit.prevent key="6">
         <div class="col s12 m6">
             <h2>Услуга подтверждена</h2>
-            <p class="bigp">Для оплаты услуги вы можете обратиться в <a class="showinfo">любое отделение связи Московского филиала ПАО «Ростелеком»</a>.</p>
+            <p class="bigp">Для оплаты услуги вы можете обратиться в <a class="showinfo" href="{{ route('info') }}" target="_blank">любое отделение связи Московского филиала ПАО «Ростелеком»</a>.</p>
         </div>
         <div class="col s12 m6">
             <div class="code-wrapper">
