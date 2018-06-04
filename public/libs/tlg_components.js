@@ -146,7 +146,7 @@ Vue.component("mask-phone", {
         }
     },
     template: `
-        <input :id="id" type="text" @change='input' :class="dataClass" :name="name" :placeholder="placeholder" />
+        <input :id="id" type="text" @change='input' :class="dataClass" :name="name" :placeholder="placeholder" :value="value" />
     `,
     props: ['data-class', 'id', 'name', 'placeholder', 'value'],
     mounted () {

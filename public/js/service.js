@@ -123,9 +123,7 @@ var ttgram = new Vue({
                             vm.telegram_data.r_name = data.name;
                             vm.telegram_data.r_surname = data.surname;
                             vm.telegram_data.r_company = data.company;
-                            //vm.telegram_data.r_phone = data.phone;
-                            // костыль - плохо свзана модель, значения инпута по-другому не обновляется
-                            document.getElementById("r_phone").value = data.phone;
+                            vm.telegram_data.r_phone = data.phone || "";
                             vm.telegram_data.r_email = data.email;
                             vm.telegram_data.r_region = data.region;
                             vm.telegram_data.r_city = data.city;
