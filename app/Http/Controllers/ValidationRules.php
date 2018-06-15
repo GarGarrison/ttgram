@@ -40,7 +40,8 @@ class ValidationRules
     }
     // 1234567890 => +7 (123) 456-78-90
     public static function dataPhoneConvertBack($phone) {
-        return sprintf("+7 (%s) %s-%s-%s", substr($phone, 0,3), substr($phone, 3,3), substr($phone, 6,2), substr($phone, 8));
+        if ($phone == "") return "";
+        else return sprintf("+7 (%s) %s-%s-%s", substr($phone, 0,3), substr($phone, 3,3), substr($phone, 6,2), substr($phone, 8));
     }
 }
 
