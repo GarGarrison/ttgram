@@ -1,7 +1,7 @@
 @extends('layouts.home_layout')
 
 @section("scripts")
-<script type="text/javascript" src="/js/templates.js"></script>
+<script type="text/javascript" src="/dist/templates.js"></script>
 @endsection
 
 @section("header")

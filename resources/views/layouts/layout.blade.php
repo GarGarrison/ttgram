@@ -8,16 +8,17 @@
     <link rel="stylesheet" href="/libs/materialize/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/libs/kladr/kladr.css">
-    <link rel="stylesheet" type="text/css" href="/libs/modal.css">
-    <script type="text/javascript" src="/libs/vue_dev.js"></script>
+    <script type="text/javascript" src="/dist/common.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="/libs/kladr/kladr.css">
+    <link rel="stylesheet" type="text/css" href="/libs/modal.css"> -->
+    <!-- <script type="text/javascript" src="/libs/vue_dev.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
     <script type="text/javascript" src="/libs/cleave/cleave.min.js"></script>
     <script type="text/javascript" src="/libs/cleave/addons/cleave-phone.ru.js"></script>
     <script type="text/javascript" src="/libs/kladr/Kladr.js"></script>
     <script type="text/javascript" src="/libs/tlg_components.js"></script>
-    <script type="text/javascript" src="/js/validation.js"></script>
+    <script type="text/javascript" src="/js/validation.js"></script> -->
 </head>
 <body>
     <div id="ttgram" class="container">

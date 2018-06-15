@@ -35,6 +35,7 @@ class HomeController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
+            $data = ValidationRules::dataPhoneConvert($data, ["phone"]);
             $user = Auth::user();
             if ($data["password"] == "") unset($data["password"]);
             if ($data["email"] == $user->email) unset($data["email"]);
@@ -44,16 +45,6 @@ class HomeController extends Controller
             }
             if (isset($data["password"])) $data['password'] = bcrypt($data['password']);
             $user->update($data);
-            // $user->user_type = $data['user_type'];
-            // $user->fio = $data['fio'];
-            // $user->company = $data['company'];
-            // $user->phone = $data['phone'];
-            // $user->region = $data['region'];
-            // $user->city = $data['city'];
-            // $user->street = $data['street'];
-            // $user->building = $data['building'];
-            // $user->flat = $data['flat'];
-            // $user->save();
         }
         return view('home.profile');
     }
@@ -101,6 +92,7 @@ class HomeController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
             $data["uid"] = Auth::user()->id;
+            $data = ValidationRules::dataPhoneConvert($data, ["phone"]);
             if (isset($data["current_id"])) SavedReceiver::find($data["current_id"])->update($data);
             else SavedReceiver::create($data);
             return redirect()->back();
@@ -111,6 +103,9 @@ class HomeController extends Controller
     public function get_receivers()
     {
         $arr = SavedReceiver::where("uid", Auth::user()->id)->get();
+        foreach ($arr as $i) {
+            $i["phone"] = ValidationRules::dataPhoneConvertBack($i["phone"]);
+        }
         return $arr;
     }
 

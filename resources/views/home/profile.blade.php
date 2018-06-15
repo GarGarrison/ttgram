@@ -1,27 +1,7 @@
 @extends('layouts.home_layout')
 
 @section("scripts")
-<script type="text/javascript">
-    var app = new Vue({
-        el: '#ttgram',
-        data: {
-            user_type: "fiz",
-            fio : "",
-            company : "",
-            inn: "",
-            kpp: "",
-            phone : "",
-            email : "",
-            country: "",
-            region : "",
-            city : "",
-            street : "",
-            building : "",
-            flat : ""
-        },
-        mixins: [mount_mixin, kladr_mixin]
-    });
-</script>
+<script type="text/javascript" src="/dist/profile.js"></script>
 @endsection
 
 @section("header")

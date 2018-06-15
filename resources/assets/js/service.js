@@ -1,3 +1,15 @@
+import Vue from 'vue'
+import axios from 'axios'
+import vuejsDatepicker from 'vuejs-datepicker'
+import MaskedInput from 'vue-masked-input'
+
+import Modal from './components/Modal.vue'
+import TlgTextarea from './components/TlgTextarea.vue'
+import Validator from './validation.js'
+import KladrItem from './components/kladr/KladrItem.vue'
+import KladrBlock from './components/kladr/KladrBlock.vue'
+import kladr_mixin from './components/kladr/KladrMixin.js'
+
 var RU = {
     language: 'Russian',
     months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
@@ -39,24 +51,24 @@ var ttgram = new Vue({
                 telegraf_abbr: false,           // включить телеграфные сокращения
                 telegram_data: {
                     s_type: "fiz",
-                    s_fio: "",
+                    s_fio: document.getElementById('s_fio').getAttribute('value'),
                     r_name: "",
                     r_surname: "",
-                    s_company: "",
+                    s_company: document.getElementById('s_company').getAttribute('value'),
                     r_company: "",
-                    s_phone: "",
+                    s_phone: document.getElementById('s_phone').getAttribute('value'),
                     r_phone: "",
-                    s_email: "",
+                    s_email: document.getElementById('s_email').getAttribute('value'),
                     r_email: "",
-                    s_region: "",
+                    s_region: document.getElementById('s_region').getAttribute('value'),
                     r_region: "",
-                    s_city: "",
+                    s_city: document.getElementById('s_city').getAttribute('value'),
                     r_city: "",
-                    s_street: "",
+                    s_street: document.getElementById('s_street').getAttribute('value'),
                     r_street: "",
-                    s_building: "",
+                    s_building: document.getElementById('s_building').getAttribute('value'),
                     r_building: "",
-                    s_flat: "",
+                    s_flat: document.getElementById('s_flat').getAttribute('value'),
                     r_flat: "",
                     notification: "",
                     notification_quick: "",
@@ -74,7 +86,7 @@ var ttgram = new Vue({
                 showModal: false,
                 validate_errors: {}
             },
-            mixins: [mount_mixin, kladr_mixin],
+            mixins: [kladr_mixin],
             watch: {
                 picker_copy_date: function(v) {
                     this.telegram_data.copy_date = this.process_date(v)
@@ -107,7 +119,7 @@ var ttgram = new Vue({
                     if (kladr_block_id == "receiver") this.telegram_data.r_region = v;
                 },
                 processFile: function(event){
-                    vm = this;
+                    var vm = this;
                     var file = event.target.files[0];
                     var reader = new FileReader();
                     reader.onload = function(e) {
@@ -116,10 +128,10 @@ var ttgram = new Vue({
                     reader.readAsText(file);
                 },
                 chooseReceiver: function() {
-                    vm = this;
+                    var vm = this;
                     axios.get("/get_receiver_data/" + this.saved_receiver)
                         .then(function (response) {
-                            data = response.data;
+                            var data = response.data;
                             vm.telegram_data.r_name = data.name;
                             vm.telegram_data.r_surname = data.surname;
                             vm.telegram_data.r_company = data.company;
@@ -137,10 +149,10 @@ var ttgram = new Vue({
 
                 },
                 chooseTemplate: function() {
-                    vm = this;
+                    var vm = this;
                     axios.get("/get_template_data/" + this.saved_template)
                         .then(function (response) {
-                            data = response.data;
+                            var data = response.data;
                             vm.telegram_data.text = data.template;
                         })
                         .catch(function (response) {
@@ -195,7 +207,7 @@ var ttgram = new Vue({
                     this.next();
                 },
                 submit_finally: function() {
-                    vm = this;
+                    var vm = this;
                     vm.validate_steps(vm.step);
                     if (!Object.keys(vm.validate_errors).length) {
                         axios.post("/save_telegram", vm.telegram_data)
@@ -211,7 +223,7 @@ var ttgram = new Vue({
                 submit_receiver: function(){
                     var vm = this;
                     var url = vm.$refs["reciever_form"].getAttribute("action");
-                    data = {
+                    var data = {
                         template_name: vm.template_name,
                         name: vm.telegram_data.r_name,
                         surname: vm.telegram_data.r_surname,
@@ -237,7 +249,7 @@ var ttgram = new Vue({
                 submit_register: function(){
                     var vm = this;
                     var url = vm.$refs["register_form"].getAttribute("action");
-                    data = {
+                    var data = {
                         user_type: vm.telegram_data.s_type,
                         fio: vm.telegram_data.s_fio,
                         company: vm.telegram_data.s_company,
@@ -253,7 +265,6 @@ var ttgram = new Vue({
                     };
                     axios.post(url, data)
                             .then(function (response) {
-                                console.log(response);
                                 vm.showModal = false;
                                 vm.next();
                             })
@@ -283,6 +294,11 @@ var ttgram = new Vue({
                 }
             },
             components: {
-                vuejsDatepicker
+                vuejsDatepicker,
+                MaskedInput,
+                Modal,
+                TlgTextarea,
+                KladrItem,
+                KladrBlock
             }
         })

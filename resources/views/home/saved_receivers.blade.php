@@ -1,7 +1,7 @@
 @extends('layouts.home_layout')
 
 @section("scripts")
-<script type="text/javascript" src="/js/saved_receivers.js"></script>
+<script type="text/javascript" src="/dist/saved_receivers.js"></script>
 @endsection
 
 @section("header")
@@ -38,7 +38,7 @@
                     <input class="input-text uppercase" type="text" v-model="company" name="company" placeholder="Компания"></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['phone']">@{{ validate_errors['phone'] }}</span>
-                    <mask-phone id="phone" v-model="phone" name="phone" placeholder="Телефон"></mask-phone></div>
+                    <masked-input id="phone" name="phone" v-model="phone" mask="\+\7 (111) 111-11-11" placeholder="Телефон"></masked-input></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['email']">@{{ validate_errors['email'] }}</span>
                     <input class="input-text"           type="email" v-model="email"   name="email"   placeholder="E-mail"></div>
@@ -76,10 +76,10 @@
             <list-filter :original_list='tmp_list' :filter_field="[]" data-empty="Адресатов не найдено">
                 <template slot="inputs" slot-scope="inputList">
                     <tr>
-                        <th>
+                        <th style="width: 40%">
                             <input type="text" placeholder="Фильтр по названию шаблона" v-model="inputList.fields.template_name">
                         </th>
-                        <th>
+                        <th style="width: 60%">
                             <input type="text" placeholder="Фильтр по ФИО" v-model="inputList.fields.surname">
                         </th>
                     </tr>

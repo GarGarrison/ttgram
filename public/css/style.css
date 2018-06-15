@@ -256,6 +256,7 @@ label {
     color: #888;
 }
 /* label focus color */
+input:focus + label,
 input[type=text]:focus + label,
 input[type=email]:focus + label,
 input[type=password]:focus + label,
@@ -263,6 +264,7 @@ textarea:focus + label {
     color: #ccc !important;
 }
 /* label underline focus color */
+input:focus,
 input[type=text]:focus,
 input[type=email]:focus,
 input[type=password]:focus,

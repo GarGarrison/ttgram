@@ -22,8 +22,26 @@ class ValidationRules
             'company' => 'string|max:150|nullable',
             'inn' => 'numeric|digits:12|nullable',
             'kpp' => 'numeric|digits:12|nullable',
-            'phone' => 'nullable',
+            'phone' => 'digits:10|nullable',
         ];
+    // +7 (123) 456-78-90 => 1234567890
+    public static function dataPhoneConvert($data, $names) {
+        foreach ($names as $name) {
+            //if (!isset($data[$name])) continue;
+            $tmp = $data[$name];
+            $tmp = str_replace("+7", "", $tmp);
+            $tmp = str_replace(" ", "", $tmp);
+            $tmp = str_replace("(", "", $tmp);
+            $tmp = str_replace(")", "", $tmp);
+            $tmp = str_replace("-", "", $tmp);
+            $data[$name] = $tmp;
+        }
+        return $data;
+    }
+    // 1234567890 => +7 (123) 456-78-90
+    public static function dataPhoneConvertBack($phone) {
+        return sprintf("+7 (%s) %s-%s-%s", substr($phone, 0,3), substr($phone, 3,3), substr($phone, 6,2), substr($phone, 8));
+    }
 }
 
 ?>

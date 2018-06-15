@@ -1,3 +1,8 @@
+import Vue from 'vue'
+import axios from 'axios'
+import ListFilter from './components/ListFilter.vue'
+import MenuButton from './components/MenuButton.vue'
+
 var app = new Vue({
     el: '#ttgram',
     data: {
@@ -14,4 +19,8 @@ var app = new Vue({
                 console.log(response)
             })
     },
+    components: {
+        ListFilter,
+        MenuButton
+    }
 });

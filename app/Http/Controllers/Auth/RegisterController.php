@@ -60,6 +60,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $data['password'] = bcrypt($data['password']);
+        $data = ValidationRules::dataPhoneConvert($data, ["phone"]);
         return User::create($data);
     }
 }

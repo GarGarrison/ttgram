@@ -36,6 +36,7 @@ class MainController extends Controller
     public function save_telegram(Request $request){
         $user = Auth::user();
         $data = $request->all();
+        $data = ValidationRules::dataPhoneConvert($data, ["s_phone", "r_phone"]);
         if ($user) { 
             $data["uid"] = $user->id;
             $data["s_type"] = $user->user_type;
@@ -49,7 +50,9 @@ class MainController extends Controller
     // }
 
     public function get_receiver_data($rid){
-        return SavedReceiver::find($rid);
+        $r = SavedReceiver::find($rid);
+        $r["phone"] = ValidationRules::dataPhoneConvertBack($r["phone"]);
+        return $r;
     }
 
     public function get_template_data($tid){
