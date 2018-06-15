@@ -29,10 +29,10 @@
             }
         },
         mounted: function() {
-            var h = document.body.clientHeight;
+            var h = window.innerHeight;
             var max_h = window.innerHeight * 0.9;
             this.$set(this.maskHeight, "height", h+"px");
-            //this.$set(this.msgHeight, "max-height", max_h+"px");
+            this.$set(this.msgHeight, "max-height", max_h+"px");
         },
         methods: {
             maskClick: function(event){
