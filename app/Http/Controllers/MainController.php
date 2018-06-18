@@ -51,7 +51,6 @@ class MainController extends Controller
 
     public function get_receiver_data($rid){
         $r = SavedReceiver::find($rid);
-        $r["phone"] = ValidationRules::dataPhoneConvertBack($r["phone"]);
         return $r;
     }
 

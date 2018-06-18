@@ -44,19 +44,15 @@
                     <input class="input-text"           type="email" v-model="email"   name="email"   placeholder="E-mail"></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['region']">@{{ validate_errors['region'] }}</span>
-                    <!-- <input class="input-text uppercase" type="text" v-model="region"  name="region"  placeholder="Регион"></div> -->
                     <kladr-item data-kladr-type="region" v-model="region"  name="region"  placeholder="Регион"></kladr-item></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['city']">@{{ validate_errors['city'] }}</span>
-                    <!-- <input class="input-text uppercase" type="text" v-model="city"    name="city"    placeholder="Населенный пункт"></div> -->
                     <kladr-item data-kladr-type="city" v-model="city"    name="city"    placeholder="Населенный пункт"></kladr-item></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['street']">@{{ validate_errors['street'] }}</span>
-                    <!-- <input class="input-text uppercase" type="text" v-model="street"  name="street"  placeholder="Улица"></div> -->
                     <kladr-item data-kladr-type="street" v-model="street"    name="street"    placeholder="Улица"></kladr-item></div>
                 <div class="col s12 m6">
                     <span class="error" v-if="validate_errors['building']">@{{ validate_errors['building'] }}</span>
-                    <!-- <input class="input-text uppercase half" type="text" v-model="building" name="building" placeholder="Дом"> -->
                     <kladr-item class="left half" data-kladr-type="building" v-model="building"    name="building"    placeholder="Дом"></kladr-item>
                     <input class="input-text half right" type="text"  v-model="flat" name="flat" placeholder="Квартира">
                 </div>

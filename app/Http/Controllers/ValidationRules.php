@@ -25,23 +25,22 @@ class ValidationRules
             'phone' => 'digits:10|nullable',
         ];
     // +7 (123) 456-78-90 => 1234567890
+    public static function phoneConvert($phone) {
+        $phone = str_replace("+7", "", $phone);
+        $phone = str_replace(" ", "", $phone);
+        $phone = str_replace("(", "", $phone);
+        $phone = str_replace(")", "", $phone);
+        $phone = str_replace("-", "", $phone);
+        return $phone;
+    }
+
     public static function dataPhoneConvert($data, $names) {
         foreach ($names as $name) {
-            //if (!isset($data[$name])) continue;
-            $tmp = $data[$name];
-            $tmp = str_replace("+7", "", $tmp);
-            $tmp = str_replace(" ", "", $tmp);
-            $tmp = str_replace("(", "", $tmp);
-            $tmp = str_replace(")", "", $tmp);
-            $tmp = str_replace("-", "", $tmp);
+            if (!isset($data[$name])) continue;
+            $tmp = self::phoneConvert($data[$name]);
             $data[$name] = $tmp;
         }
         return $data;
-    }
-    // 1234567890 => +7 (123) 456-78-90
-    public static function dataPhoneConvertBack($phone) {
-        if ($phone == "") return "";
-        else return sprintf("+7 (%s) %s-%s-%s", substr($phone, 0,3), substr($phone, 3,3), substr($phone, 6,2), substr($phone, 8));
     }
 }
 

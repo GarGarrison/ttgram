@@ -103,9 +103,6 @@ class HomeController extends Controller
     public function get_receivers()
     {
         $arr = SavedReceiver::where("uid", Auth::user()->id)->get();
-        foreach ($arr as $i) {
-            $i["phone"] = ValidationRules::dataPhoneConvertBack($i["phone"]);
-        }
         return $arr;
     }
 

@@ -48,6 +48,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $data = ValidationRules::dataPhoneConvert($data, ["phone"]);
         return Validator::make($data, ValidationRules::UserRules);
     }
 

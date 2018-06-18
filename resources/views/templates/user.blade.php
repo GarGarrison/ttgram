@@ -35,7 +35,7 @@
         @if ($errors->has('phone'))
         <span class="error">{{ $errors->first('phone') }}</span>
         @endif
-        <masked-input id="phone" name="phone" v-model="phone" mask="\+\7 (111) 111-11-11" placeholder="Телефон" value="{{ Auth::user() ? Auth::user()->phone: old('phone') }}"></masked-input></div>
+        <masked-input id="phone" name="phone" v-model="phone" mask="\+\7 (111) 111-11-11" placeholder="Телефон" value="{{ Auth::user() ? Auth::user()->phone: ValidationRules::phoneConvert(old('phone')) }}"></masked-input></div>
     <div class="col s12 m6">
         @if ($errors->has('email'))
         <span class="error">{{ $errors->first('email') }}</span>
