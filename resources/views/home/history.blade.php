@@ -14,16 +14,16 @@
             <list-filter :original_list='history_list' :filter_field="[]" data-empty="Услуг не найдено">
                 <template slot="inputs" slot-scope="inputList">
                     <tr>
-                        <th class="list-element">
+                        <th>
                             <input type="text" placeholder="Фильтр по номеру" v-model="inputList.fields.id">
                         </th>
-                        <th class="list-element">
+                        <th>
                             <input type="text" placeholder="Фильтр по дате" v-model="inputList.fields.created_at">
                         </th>
-                        <th class="list-element">
+                        <th>
                             <input type="text" placeholder="Фильтр услуге" v-model="inputList.fields.service_type">
                         </th>
-                        <th class="list-element">
+                        <th>
                             <input type="text" placeholder="Фильтр по статусу" v-model="inputList.fields.status">
                         </th>
                     </tr>

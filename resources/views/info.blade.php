@@ -1,14 +1,11 @@
 @extends('layouts.layout')
 @section('content')
-<table class="striped">
-    <thead>
+<table class="info_table">
         <tr>
             <th>Город</th>
             <th>Адрес</th>
             <th>Режим работы</th>
         </tr>
-    </thead>
-    <tbody>
         <tr>
             <td>г. Балашиха</td>
             <td>пр. Ленина 26</td>
@@ -326,6 +323,5 @@
     перерыв 13:00-14:00<br />
     вс.,пн.-выходной</td>
         </tr>
-        </tbody>
 </table>
 @endsection

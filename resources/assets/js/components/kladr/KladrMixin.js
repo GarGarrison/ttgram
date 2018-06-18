@@ -1,4 +1,4 @@
-var kladr_mixin = {
+export default {
     methods: {
         federalCity: function(kladr_block_id){
             this.city = this.region;

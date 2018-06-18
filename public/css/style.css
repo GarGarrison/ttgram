@@ -74,6 +74,11 @@ ul li {
   margin: initial;
 }
 
+table.info_table th {
+  padding: 10px;
+  border-bottom: 1px solid #bbb;
+}
+
 table.filter_table {
   border-collapse: collapse;
 }
@@ -84,11 +89,14 @@ table.filter_table td{
 table.filter_table th {
   padding: 0px;
 }
-table.filter_table tr {
+table.filter_table tr,
+table.info_table tr {
   border-bottom: 1px solid #ccc;
 }
 table.filter_table tr:first-child,
-table.filter_table tr:last-child {
+table.filter_table tr:last-child,
+table.info_table tr:first-child,
+table.info_table tr:last-child {
   border-bottom: none;
 }
 

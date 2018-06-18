@@ -9,6 +9,7 @@
             :value='value'>
         <transition name='kladr-list'>
             <div class='kladr-list' v-show='variants.length > 0'>
+                <i class="material-icons kladr-close" @click='clear_variants'>close</i>
                 <div v-for='(v, index) in variants' 
                      v-bind:key='index + v.id' 
                      v-bind:data-index='index'
@@ -44,6 +45,10 @@
                     function(event){
                         var vm = this;
                         vm.$emit('input', event.target.value);
+                        if (event.target.value == "") {
+                            this.$parent.$data[this.dataKladrType] = "";
+                            return;
+                        }
                         var parent_type = vm.getParent(vm.dataKladrType);
                         var parent_id = "";
                         if (parent_type) parent_id = vm.$parent.$data[parent_type].id;
@@ -101,7 +106,12 @@
     .kladr-list div:hover {
         background: #e5e5e5;
     }
-
+    .kladr-close {
+        padding: 3px;
+        float: right;
+        font-size: 1.3rem;
+        cursor: pointer;
+    }
     .kladr-list-enter-active, .kladr-list-leave-active {
         transition: opacity .3s;
     }

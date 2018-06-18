@@ -22,7 +22,8 @@
             city: function(val) {
                 if (this.region == "") {
                     var kladr_block_id = this.$el.getAttribute("id");
-                    var parent = val.parents[0];
+                    var parent = val;
+                    if (val.parents.length > 0) parent = val.parents[0];
                     parent.compute_value = val.compute_value;
                     this.region = parent;
                     this.$root.updateRegionFromCity(parent, kladr_block_id);
